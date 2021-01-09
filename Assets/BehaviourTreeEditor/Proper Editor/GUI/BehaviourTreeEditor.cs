@@ -6,7 +6,6 @@ public class BehaviourTreeEditor : EditorWindow
 {  
     private List<Node> nodes;
     private List<Connection> connections;
-
     private GUIStyle nodeStyle;
     private GUIStyle selectedNodeStyle;
     private GUIStyle inPointStyle;
