@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using System;
-using System.Collections.Generic;
+using System.Reflection;
 
 public class Node
 {
@@ -12,6 +12,8 @@ public class Node
 
    public ConnectionPoint inPoint;
    public ConnectionPoint outPoint;
+   public MonoScript tempScript = null;
+   public string scriptPath = null;
 
    public GUIStyle style;
    public GUIStyle defaultNodeStyle;
@@ -46,9 +48,18 @@ public class Node
 
    public void Draw()
    {
-       inPoint.Draw();
-       outPoint.Draw();
-       GUI.Box(rect, title, style);
+        inPoint.Draw();
+        outPoint.Draw();
+        GUI.Box(rect, title, style);
+        GUILayout.BeginArea(new Rect(rect.position.x + 10, rect.position.y, rect.width - 20, rect.height - 5));
+        GUILayout.Space(10);
+        tempScript = EditorGUILayout.ObjectField(tempScript, typeof(MonoScript), false) as MonoScript;
+        if (tempScript != null && tempScript.GetClass().BaseType.Name == "BehaviourState")
+        {
+            scriptPath = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(tempScript.GetClass().ToString())[0]);
+        }            
+        GUILayout.EndArea();
+
    }
 
    public bool ProcessEvents(Event e)

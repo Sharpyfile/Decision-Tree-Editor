@@ -10,11 +10,14 @@ public class BehaviourTreeComponent : MonoBehaviour
     private PlayerMove playerMove;
     private PlayerRun playerRun;
 
-    private Dictionary<string, BehaviourStateConnection> connectionDictiorary;
+    private List<BehaviourStateConnection> connectionsList;
 
     private void Start()
     {
-        connectionDictiorary = new Dictionary<string, BehaviourStateConnection>();
+
+        // Add loading all assets as Instatiate by BehaviourStateConnectio.pathToNextState
+        // Resourses.Load(path) as BehaviourState
+        connectionsList = new List<BehaviourStateConnection>();
         playerIdle = new PlayerIdle();
         playerMove = new PlayerMove();
         playerRun = new PlayerRun();
@@ -24,12 +27,12 @@ public class BehaviourTreeComponent : MonoBehaviour
         
 
         BehaviourStateConnection testConnection1 = new BehaviourStateConnection(playerMove);
-        testConnection1.IntBasedConditions.Add(test1.conditionName, test1);
+        testConnection1.IntBasedConditions.Add(test1);
         BehaviourStateConnection testConnection2 = new BehaviourStateConnection(playerRun);
-        testConnection2.IntBasedConditions.Add(test2.conditionName, test2);
+        testConnection2.IntBasedConditions.Add(test2);
 
-        connectionDictiorary.Add("testConnection1", testConnection1);
-        connectionDictiorary.Add("testConnection2", testConnection1);
+        connectionsList.Add(testConnection1);
+        connectionsList.Add(testConnection1);
 
         playerIdle.stateConnections.Add(testConnection1);
         playerIdle.stateConnections.Add(testConnection2);
@@ -66,56 +69,72 @@ public class BehaviourTreeComponent : MonoBehaviour
 
     public void SetFloat(string conditionName, float value)
     {
-        foreach(BehaviourStateConnection connection in connectionDictiorary.Values)
+        for(int j= 0; j < connectionsList.Count; j++)
         {
-            if (connection.FloatBasedConditions.ContainsKey(conditionName))
+            for(int i = 0; i < connectionsList[j].FloatBasedConditions.Count; i++)
             {
-                FloatBasedCondition temp = connection.FloatBasedConditions[conditionName];
-                temp.variable1 = value;
-                connection.FloatBasedConditions[conditionName] = temp;
-                return;
+            
+                if (connectionsList[j].FloatBasedConditions[i].conditionName == conditionName)
+                {
+                    connectionsList[j].FloatBasedConditions[i]  = new FloatBasedCondition(connectionsList[j].FloatBasedConditions[i].conditionName, 
+                    connectionsList[j].FloatBasedConditions[i].operation, value, connectionsList[j].FloatBasedConditions[i].variable2);
+                    return;
+                }
+            
             }
         }
     }
 
+
     public void SetInt(string conditionName, int value)
     {
-        foreach(BehaviourStateConnection connection in connectionDictiorary.Values)
+        for(int j= 0; j < connectionsList.Count; j++)
         {
-            if (connection.IntBasedConditions.ContainsKey(conditionName))
+            for(int i = 0; i < connectionsList[j].IntBasedConditions.Count; i++)
             {
-                IntBasedCondition temp = connection.IntBasedConditions[conditionName];
-                temp.variable1 = value;
-                connection.IntBasedConditions[conditionName] = temp;
-                return;
+            
+                if (connectionsList[j].IntBasedConditions[i].conditionName == conditionName)
+                {
+                    connectionsList[j].IntBasedConditions[i]  = new IntBasedCondition(connectionsList[j].IntBasedConditions[i].conditionName, 
+                    connectionsList[j].IntBasedConditions[i].operation, value, connectionsList[j].IntBasedConditions[i].variable2);
+                    return;
+                }
+            
             }
         }
     }
 
     public void SetBool(string conditionName, bool value)
     {
-        foreach(BehaviourStateConnection connection in connectionDictiorary.Values)
+        for(int j= 0; j < connectionsList.Count; j++)
         {
-            if (connection.BoolBasedConditions.ContainsKey(conditionName))
+            for(int i = 0; i < connectionsList[j].BoolBasedConditions.Count; i++)
             {
-                BoolBasedCondition temp = connection.BoolBasedConditions[conditionName];
-                temp.variable1 = value;
-                connection.BoolBasedConditions[conditionName] = temp;
-                return;
+            
+                if (connectionsList[j].BoolBasedConditions[i].conditionName == conditionName)
+                {
+                    connectionsList[j].BoolBasedConditions[i]  = new BoolBasedCondition(connectionsList[j].BoolBasedConditions[i].conditionName, 
+                    connectionsList[j].BoolBasedConditions[i].operation, value, connectionsList[j].BoolBasedConditions[i].variable2);
+                    return;
+                }
+            
             }
         }
     }
-
     public void SetString(string conditionName, string value)
     {
-        foreach(BehaviourStateConnection connection in connectionDictiorary.Values)
+        for(int j= 0; j < connectionsList.Count; j++)
         {
-            if (connection.StringBasedConditions.ContainsKey(conditionName))
+            for(int i = 0; i < connectionsList[j].StringBasedConditions.Count; i++)
             {
-                StringBasedCondition temp = connection.StringBasedConditions[conditionName];
-                temp.variable1 = value;
-                connection.StringBasedConditions[conditionName] = temp;
-                return;
+            
+                if (connectionsList[j].StringBasedConditions[i].conditionName == conditionName)
+                {
+                    connectionsList[j].StringBasedConditions[i]  = new StringBasedCondition(connectionsList[j].StringBasedConditions[i].conditionName, 
+                    connectionsList[j].StringBasedConditions[i].operation, value, connectionsList[j].StringBasedConditions[i].variable2);
+                    return;
+                }
+            
             }
         }
     }  

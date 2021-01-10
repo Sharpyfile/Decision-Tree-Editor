@@ -10,6 +10,15 @@ public enum Operation
     IsEqual,
     IsDifferent
 }
+
+public enum TypeOfCondition
+{
+    Int,
+    Float,
+    Bool,
+    String,
+    Trait
+}
 public struct IntBasedCondition
 {
     
@@ -154,22 +163,22 @@ public static class ConditionValidator
         Debug.Log(connection.IntBasedConditions.Count);
         //Debug.Log(connection.IntBasedConditions.Count);
 
-        foreach(IntBasedCondition condition in connection.IntBasedConditions.Values)
+        foreach(IntBasedCondition condition in connection.IntBasedConditions)
         {
             if(!IntBasedConditionCheck(condition))
                 return false;
         }
-        foreach(FloatBasedCondition condition in connection.FloatBasedConditions.Values)
+        foreach(FloatBasedCondition condition in connection.FloatBasedConditions)
         {
             if(!FloatBasedConditionCheck(condition))
                 return false;
         }
-        foreach(BoolBasedCondition condition in connection.BoolBasedConditions.Values)
+        foreach(BoolBasedCondition condition in connection.BoolBasedConditions)
         {
             if(!BoolBasedConditionCheck(condition))
                 return false;
         }
-        foreach(StringBasedCondition condition in connection.StringBasedConditions.Values)
+        foreach(StringBasedCondition condition in connection.StringBasedConditions)
         {
             if(!StringBasedConditionCheck(condition))
                 return false;

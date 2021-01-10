@@ -52,6 +52,7 @@ public class BehaviourTreeEditor : EditorWindow
 
         DrawNodes();
         DrawConnections();
+        
 
         DrawConnectionLine(Event.current);
 
@@ -69,6 +70,7 @@ public class BehaviourTreeEditor : EditorWindow
             foreach( Node node in nodes)
             {
                 node.Draw();
+                
             }
         }
     }

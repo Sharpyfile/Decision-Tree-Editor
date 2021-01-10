@@ -10,11 +10,19 @@ public class BehaviourStateConnection
     {
         this.nextState = nextState;
     }
+
+    public BehaviourStateConnection(string pathToNextState)
+    {
+        this.pathToNextState = pathToNextState;
+    }
+
     public BehaviourState nextState = null;
-    public Dictionary<string ,IntBasedCondition> IntBasedConditions = new Dictionary<string, IntBasedCondition>();
-    public Dictionary<string ,FloatBasedCondition> FloatBasedConditions = new Dictionary<string, FloatBasedCondition>();
-    public Dictionary<string ,BoolBasedCondition> BoolBasedConditions = new Dictionary<string, BoolBasedCondition>();
-    public Dictionary<string ,StringBasedCondition> StringBasedConditions = new Dictionary<string, StringBasedCondition>();
+
+    public string pathToNextState = null;
+    public List<IntBasedCondition> IntBasedConditions = new List<IntBasedCondition>();
+    public List<FloatBasedCondition> FloatBasedConditions = new List<FloatBasedCondition>();
+    public List<BoolBasedCondition> BoolBasedConditions = new List<BoolBasedCondition>();
+    public List<StringBasedCondition> StringBasedConditions = new List<StringBasedCondition>();
 
     public bool CheckStateConditions()
     {
