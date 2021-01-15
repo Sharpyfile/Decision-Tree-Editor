@@ -34,7 +34,7 @@ public struct IntBasedCondition
     public int variable1 {get; set;}
     public int variable2 {get; set;}
 
-    public override string ToString() => $"({conditionName}, {operation}, {variable1}, {variable2})";
+    public override string ToString() => $"{conditionName},{operation},{variable1},{variable2}";
 }
 
 public struct FloatBasedCondition
@@ -51,7 +51,7 @@ public struct FloatBasedCondition
     public float variable1 {get; set;}
     public float variable2 {get; set;}
 
-    public override string ToString() => $"({conditionName}, {operation}, {variable1}, {variable2})";
+    public override string ToString() => $"{conditionName},{operation},{variable1},{variable2}";
 }
 
 
@@ -69,7 +69,7 @@ public struct BoolBasedCondition
     public bool variable1 {get; set;}
     public bool variable2 {get; set;}
 
-    public override string ToString() => $"({conditionName}, {operation}, {variable1}, {variable2})";
+    public override string ToString() => $"{conditionName},{operation},{variable1},{variable2}";
 }
 
 public struct StringBasedCondition
@@ -86,7 +86,7 @@ public struct StringBasedCondition
     public string variable1 {get; set;}
     public string variable2 {get; set;}
 
-    public override string ToString() => $"({conditionName}, {operation}, {variable1}, {variable2})";
+    public override string ToString() => $"{conditionName},{operation},{variable1},{variable2}";
 }
 
 
@@ -160,9 +160,6 @@ public static class ConditionValidator
 
     public static bool CheckConnectionConditions(BehaviourStateConnection connection)
     {
-        Debug.Log(connection.IntBasedConditions.Count);
-        //Debug.Log(connection.IntBasedConditions.Count);
-
         foreach(IntBasedCondition condition in connection.IntBasedConditions)
         {
             if(!IntBasedConditionCheck(condition))

@@ -242,6 +242,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f69f0530abeecf46ac417dc414c83c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  traits: []
+  behaviourTreePrefab: {fileID: 11400000, guid: 0fb107110272bce4a8bb243e5806962e,
+    type: 2}
 --- !u!4 &581188370
 Transform:
   m_ObjectHideFlags: 0

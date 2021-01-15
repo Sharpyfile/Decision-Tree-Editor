@@ -4,7 +4,6 @@ public class EditorWindowExample : EditorWindow
 {
     // Create new trait that will be modified
     static Trait trait;
-    public static Trait NewTrait { get { return trait; } }
 
     void OnEnable()
     {

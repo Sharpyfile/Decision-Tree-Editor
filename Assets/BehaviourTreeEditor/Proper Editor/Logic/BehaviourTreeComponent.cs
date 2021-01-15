@@ -1,54 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BehaviourTreeComponent : MonoBehaviour
 {
     private BehaviourState currentState = null;
-
-    private PlayerIdle playerIdle;
-    private PlayerMove playerMove;
-    private PlayerRun playerRun;
-
-    private List<BehaviourStateConnection> connectionsList;
-
+    private List<BehaviourStateConnection> connectionsList = new List<BehaviourStateConnection>();
+    private List<BehaviourState> behaviourStates = new List<BehaviourState>();
+    public List<Trait> traits = new List<Trait>();
+    public BehaviourTreePrefab behaviourTreePrefab;
     private void Start()
-    {
+    {       
+        BehaviourState tempState1 = (BehaviourState)Activator.CreateInstance(Type.GetType(behaviourTreePrefab.nodes[behaviourTreePrefab.originalNodeIndex].classType));
+        tempState1.BehaviourTree = this;
+        behaviourStates.Add(tempState1);
+        currentState = tempState1;
 
-        // Add loading all assets as Instatiate by BehaviourStateConnectio.pathToNextState
-        // Resourses.Load(path) as BehaviourState
-        connectionsList = new List<BehaviourStateConnection>();
-        playerIdle = new PlayerIdle();
-        playerMove = new PlayerMove();
-        playerRun = new PlayerRun();
+        for(int i = 1; i < behaviourTreePrefab.nodes.Count; i++)
+        {
+            BehaviourState tempState2 = Activator.CreateInstance(Type.GetType(behaviourTreePrefab.nodes[i].classType)) as BehaviourState;
+            tempState2.BehaviourTree  = this;
+            behaviourStates.Add(tempState2);
+        }
 
-        IntBasedCondition test1 = new IntBasedCondition("test1", Operation.IsGreater, 0, 100);
-        IntBasedCondition test2 = new IntBasedCondition("test2", Operation.IsGreater, 0, 50);
-        
+        foreach(BehaviourState state in this.behaviourStates)
+        {
+            Debug.Log(state.GetType().ToString());
+        }
 
-        BehaviourStateConnection testConnection1 = new BehaviourStateConnection(playerMove);
-        testConnection1.IntBasedConditions.Add(test1);
-        BehaviourStateConnection testConnection2 = new BehaviourStateConnection(playerRun);
-        testConnection2.IntBasedConditions.Add(test2);
 
-        connectionsList.Add(testConnection1);
-        connectionsList.Add(testConnection1);
+        for(int i = 0; i < behaviourStates.Count; i++)
+        {
+            List<Connection> tempConnections = new List<Connection>();
+            tempConnections = behaviourTreePrefab.connections.FindAll(x => x.outPoint == behaviourTreePrefab.nodes[i].outPoint);
+            for (int j = 0; j < tempConnections.Count; j++)
+            {
+                BehaviourStateConnection tempBSConnection = new BehaviourStateConnection();
+                ConvertStringToConditions(tempBSConnection, tempConnections[j]);
+                behaviourStates[i].stateConnections.Add(tempBSConnection);
+                this.connectionsList.Add(tempBSConnection);
+                Debug.Log(behaviourTreePrefab.nodes.FindAll(x => x.outPoint == tempConnections[j].outPoint)[0].classType.ToString());
+                Debug.Log(behaviourTreePrefab.nodes.FindAll(x => x.outPoint == tempConnections[j].outPoint)[1].classType.ToString());
+                behaviourStates[i].stateConnections[j].nextState = behaviourStates[behaviourTreePrefab.nodes.FindIndex(x => x.inPoint == tempConnections[j].inPoint)];
+                Debug.Log(behaviourStates[i].stateConnections[j].nextState.GetType().ToString());
 
-        playerIdle.stateConnections.Add(testConnection1);
-        playerIdle.stateConnections.Add(testConnection2);
-        
-
-        currentState = playerIdle;
+            }
+        }
     }
-    int testInt = 0;
     private void Update()
     {
-
-        SetInt("test1", testInt);
-        testInt++;
-        Debug.Log(testInt);
         // Swap current to one of the states based on the connections
-        //Debug.Log(connectionDictiorary["testConnection1"].IntBasedConditions["test1"].variable1);
         if (CheckStateConditions())
             Debug.Log("Swapped state");
         currentState.BehaviourStateUpdate();   
@@ -85,14 +87,12 @@ public class BehaviourTreeComponent : MonoBehaviour
         }
     }
 
-
     public void SetInt(string conditionName, int value)
     {
         for(int j= 0; j < connectionsList.Count; j++)
         {
             for(int i = 0; i < connectionsList[j].IntBasedConditions.Count; i++)
             {
-            
                 if (connectionsList[j].IntBasedConditions[i].conditionName == conditionName)
                 {
                     connectionsList[j].IntBasedConditions[i]  = new IntBasedCondition(connectionsList[j].IntBasedConditions[i].conditionName, 
@@ -138,5 +138,52 @@ public class BehaviourTreeComponent : MonoBehaviour
             }
         }
     }  
+
+    private void ConvertStringToConditions(BehaviourStateConnection connection, Connection editorConnection)
+    {
+        foreach(string condition in editorConnection.intBasedConditionsToString)
+        {
+            IntBasedCondition newCondition = new IntBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = int.Parse(parts[2]);
+            newCondition.variable2 = Int16.Parse(parts[3]);
+            connection.IntBasedConditions.Add(newCondition);
+        }
+
+        foreach(string condition in editorConnection.floatBasedConditionsToString)
+        {
+            FloatBasedCondition newCondition = new FloatBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = float.Parse(parts[2]);
+            newCondition.variable2 = float.Parse(parts[3]);
+            connection.FloatBasedConditions.Add(newCondition);
+        }
+
+        foreach(string condition in editorConnection.boolBasedConditionsToString)
+        {
+            BoolBasedCondition newCondition = new BoolBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = bool.Parse(parts[2]);
+            newCondition.variable2 = bool.Parse(parts[3]);
+            connection.BoolBasedConditions.Add(newCondition);
+        }
+
+        foreach(string condition in editorConnection.stringBasedConditionsToString)
+        {
+            StringBasedCondition newCondition = new StringBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = parts[2];
+            newCondition.variable2 = parts[3];
+            connection.StringBasedConditions.Add(newCondition);
+        }
+    }
 
 }

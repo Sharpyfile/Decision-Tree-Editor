@@ -1,31 +1,42 @@
 ﻿using UnityEditor;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BehaviourTreeEditor : EditorWindow
 {  
-    private List<Node> nodes;
-    private List<Connection> connections;
-    private GUIStyle nodeStyle;
-    private GUIStyle selectedNodeStyle;
-    private GUIStyle inPointStyle;
-    private GUIStyle outPointStyle;
+    public static BehaviourTreePrefab behaviourTreePrefab;
+    public string newBehaviourTreePrefabName = "";
+    [SerializeField]
+    public List<Node> nodes;
+    [SerializeField]
+    public List<Connection> connections;
+    public GUIStyle nodeStyle;
+    public GUIStyle originalNodeStyle;
+    public GUIStyle selectedNodeStyle;
+    public GUIStyle originalSelectedNodeStyle;
+    public GUIStyle inPointStyle;
+    public GUIStyle outPointStyle;
+    [SerializeField]
+    public Node originalNode;
+    public int originalNodeIndex;
+    public ConnectionPoint selectedInPoint;
+    public ConnectionPoint selectedOutPoint;
 
-    private ConnectionPoint selectedInPoint;
-    private ConnectionPoint selectedOutPoint;
-
-    private Vector2 offset;
-    private Vector2 drag;
+    public Vector2 offset;
+    public Vector2 drag;
 
     [MenuItem("Window/Node Based Editor")]
-    private static void OpenWindow()
+    public static void OpenWindow()
     {
         BehaviourTreeEditor window = GetWindow<BehaviourTreeEditor>();
         window.titleContent = new GUIContent("Node Based Editor");
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
+        behaviourTreePrefab = (BehaviourTreePrefab)ScriptableObject.CreateInstance(typeof(BehaviourTreePrefab));
+
         nodeStyle = new GUIStyle();
         nodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
         nodeStyle.border = new RectOffset(12, 12, 12, 12);
@@ -33,6 +44,15 @@ public class BehaviourTreeEditor : EditorWindow
         selectedNodeStyle = new GUIStyle();
         selectedNodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1 on.png") as Texture2D;
         selectedNodeStyle.border = new RectOffset(12, 12, 12, 12);
+
+        originalNodeStyle = new GUIStyle();
+        originalNodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node2.png") as Texture2D;
+        originalNodeStyle.border = new RectOffset(12, 12, 12, 12);
+
+        originalSelectedNodeStyle = new GUIStyle();
+        originalSelectedNodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node2 on.png") as Texture2D;
+        originalSelectedNodeStyle.border = new RectOffset(12, 12, 12, 12);
+
 
         inPointStyle = new GUIStyle();
         inPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left.png") as Texture2D;
@@ -45,14 +65,25 @@ public class BehaviourTreeEditor : EditorWindow
         outPointStyle.border = new RectOffset(4, 4, 12, 12);
     }
 
-    private void OnGUI()
+    public void OnGUI()
     {
         DrawGrid(20, 0.2f, Color.gray);
         DrawGrid(100, 0.4f, Color.gray);
 
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Save behaviour tree"))
+            SaveBehaviourTreePrefab();
+        GUILayout.Button("Load");
+        GUILayout.Button("New");
+        EditorGUILayout.EndHorizontal();      
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Name of current Behaviour Tree");
+        newBehaviourTreePrefabName = EditorGUILayout.TextField(newBehaviourTreePrefabName); 
+        EditorGUILayout.EndHorizontal();   
+
         DrawNodes();
-        DrawConnections();
-        
+        DrawConnections();        
 
         DrawConnectionLine(Event.current);
 
@@ -63,7 +94,7 @@ public class BehaviourTreeEditor : EditorWindow
             Repaint();
     }
 
-    private void DrawNodes()
+    public void DrawNodes()
     {
         if (nodes != null)
         {
@@ -75,7 +106,7 @@ public class BehaviourTreeEditor : EditorWindow
         }
     }
 
-    private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
+    public void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
     {
         int widthDivs = Mathf.CeilToInt(position.width / gridSpacing);
         int heightDivs = Mathf.CeilToInt(position.height / gridSpacing);
@@ -100,7 +131,7 @@ public class BehaviourTreeEditor : EditorWindow
         Handles.EndGUI();
     }
 
-    private void DrawConnections()
+    public void DrawConnections()
     {
         if (connections != null)
         {
@@ -111,7 +142,7 @@ public class BehaviourTreeEditor : EditorWindow
         }
     }
 
-    private void DrawConnectionLine(Event e)
+    public void DrawConnectionLine(Event e)
     {
         if (selectedInPoint != null && selectedOutPoint == null)
         {
@@ -144,7 +175,7 @@ public class BehaviourTreeEditor : EditorWindow
         }
     }
 
-    private void ProcessEvents(Event e)
+    public void ProcessEvents(Event e)
     {
         drag = Vector2.zero;
         switch(e.type)
@@ -172,7 +203,7 @@ public class BehaviourTreeEditor : EditorWindow
         }
     }
 
-    private void ProcessNodeEvents(Event e)
+    public void ProcessNodeEvents(Event e)
     {
         if (nodes != null)
         {
@@ -188,23 +219,44 @@ public class BehaviourTreeEditor : EditorWindow
         }
     }
 
-    private void ProcessContextMenu(Vector2 mousePosition)
+    public void ProcessContextMenu(Vector2 mousePosition)
     {
         GenericMenu genericMenu = new GenericMenu();
         genericMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition));
         genericMenu.ShowAsContext();
     }
 
-    private void OnClickAddNode(Vector2 mousePosition)
+    public void OnClickAddNode(Vector2 mousePosition)
     {
         if (nodes == null)
         {
             nodes = new List<Node>();
         }
-        nodes.Add(new Node(mousePosition, 200, 50, nodeStyle, selectedNodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode));
+        nodes.Add(new Node(mousePosition, 200, 50, nodeStyle, selectedNodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode, OnMarkAsOriginalNode));
     }
 
-    private void OnClickRemoveNode(Node node)
+    public void OnMarkAsOriginalNode(Node node)
+    {
+        if (originalNode != null && originalNode != node)
+        {
+            nodes.Find(x => x == originalNode).defaultNodeStyle = nodeStyle;
+            nodes.Find(x => x == originalNode).selectedtNodeStyle = selectedNodeStyle;
+            originalNode = node;
+            originalNodeIndex = nodes.FindIndex(x => x == node);
+            originalNode.defaultNodeStyle = originalNodeStyle;
+            originalNode.selectedtNodeStyle = originalSelectedNodeStyle;
+
+        }
+        else
+        {
+            originalNode = node;
+            originalNode.defaultNodeStyle = originalNodeStyle;
+            originalNode.selectedtNodeStyle = originalSelectedNodeStyle;
+        }
+        
+    }
+
+    public void OnClickRemoveNode(Node node)
     {
         if (connections != null)
         {
@@ -231,7 +283,7 @@ public class BehaviourTreeEditor : EditorWindow
         
     }
 
-    private void OnClickInPoint(ConnectionPoint inPoint)
+    public void OnClickInPoint(ConnectionPoint inPoint)
     {
         selectedInPoint = inPoint;
 
@@ -249,7 +301,7 @@ public class BehaviourTreeEditor : EditorWindow
         }
     }
 
-    private void OnClickOutPoint(ConnectionPoint outPoint)
+    public void OnClickOutPoint(ConnectionPoint outPoint)
     {
         selectedOutPoint = outPoint;
 
@@ -267,12 +319,12 @@ public class BehaviourTreeEditor : EditorWindow
         }
     }
 
-    private void OnClickRemoveConnection(Connection connection)
+    public void OnClickRemoveConnection(Connection connection)
     {
         connections.Remove(connection);
     }
 
-    private void OnDrag(Vector2 delta)
+    public void OnDrag(Vector2 delta)
     {
         drag = delta;
 
@@ -287,19 +339,48 @@ public class BehaviourTreeEditor : EditorWindow
         GUI.changed = true;
     }
 
-    private void CreateConnection()
+    public void CreateConnection()
     {
         if (connections == null)
         {
             connections = new List<Connection>();
         }
-
-        connections.Add(new Connection(selectedInPoint, selectedOutPoint, OnClickRemoveConnection));
+        Connection tempConnection = new Connection(selectedInPoint, selectedOutPoint, OnClickRemoveConnection);
+        connections.Add(tempConnection);
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            if (nodes[i].outPoint  == selectedOutPoint)
+            {
+                nodes[i].connections.Add(tempConnection);
+                return;
+            }
+        }
     }
 
-    private void ClearConnectionSelection()
+    public void ClearConnectionSelection()
     {
         selectedInPoint = null;
         selectedOutPoint = null;
+    }
+
+    public void SaveBehaviourTreePrefab()
+    {
+        string behaviourTreePrefabPath = "Assets/Recources/BehaviourTrees/" + newBehaviourTreePrefabName;
+        BehaviourTreePrefab newBehaviourTreePrefab = (BehaviourTreePrefab)ScriptableObject.CreateInstance(typeof(BehaviourTreePrefab));
+        AssetDatabase.CreateAsset(newBehaviourTreePrefab, behaviourTreePrefabPath + ".asset");
+        newBehaviourTreePrefab = (BehaviourTreePrefab)AssetDatabase.LoadAssetAtPath(behaviourTreePrefabPath + ".asset", typeof(BehaviourTreePrefab));
+        EditorUtility.SetDirty(newBehaviourTreePrefab);
+
+        newBehaviourTreePrefab.nodes = new List<Node>(this.nodes);      
+        newBehaviourTreePrefab.connections = new List<Connection>(this.connections);      
+        newBehaviourTreePrefab.originalNodeIndex = this.originalNodeIndex;
+        newBehaviourTreePrefab.testing = new List<string>();
+        newBehaviourTreePrefab.testing.Add(connections[0].intBasedConditions[0].ToString());   
+        for(int i = 0; i < newBehaviourTreePrefab.connections.Count; i++)
+        {
+            newBehaviourTreePrefab.connections[i].ConvertAllConditionsToString();
+        }
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 }

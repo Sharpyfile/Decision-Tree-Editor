@@ -1,33 +1,42 @@
 ﻿using System;
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
+[Serializable]
 public class Connection
 {
     public ConnectionPoint inPoint;
-
     public ConnectionPoint outPoint;
     public Action<Connection> OnClickRemoveConnection;
-
     TypeOfCondition option;
+    public List<IntBasedCondition> intBasedConditions;
 
-    BehaviourStateConnection BSconnection;
-
-    IntBasedCondition tempIntBasedCondition;
-    FloatBasedCondition tempFloatBasedCondition;
-    BoolBasedCondition tempBoolBasedCondition;
-    StringBasedCondition tempStringBasedCondition;
-
+    public List<string> intBasedConditionsToString;
+    public List<FloatBasedCondition> floatBasedConditions; 
+    public List<string> floatBasedConditionsToString;
+    public List<BoolBasedCondition> boolBasedConditions;
+    public List<string> boolBasedConditionsToString;
+    public List<StringBasedCondition> stringBasedConditions;
+    public List<string> stringBasedConditionsToString;
+    public IntBasedCondition tempIntBasedCondition;
+    public FloatBasedCondition tempFloatBasedCondition;
+    public BoolBasedCondition tempBoolBasedCondition;
+    public StringBasedCondition tempStringBasedCondition;
     Vector2 scrollView;
-
-
-
     public Connection(ConnectionPoint inPoint, ConnectionPoint outPoint, Action<Connection> OnClickRemoveConnection)
     {
         this.inPoint = inPoint;
         this.outPoint = outPoint;
         this.OnClickRemoveConnection = OnClickRemoveConnection;
-        this.BSconnection = new BehaviourStateConnection(outPoint.node.scriptPath);
+        this.intBasedConditions = new List<IntBasedCondition>();
+        this.floatBasedConditions = new List<FloatBasedCondition>();
+        this.boolBasedConditions = new List<BoolBasedCondition>();
+        this.stringBasedConditions = new List<StringBasedCondition>();
+        this.intBasedConditionsToString = new List<string>();
+        this.floatBasedConditionsToString = new List<string>();
+        this.boolBasedConditionsToString = new List<string>();
+        this.stringBasedConditionsToString = new List<string>();
     }
 
     public void Draw()
@@ -60,25 +69,11 @@ public class Connection
         
         option = (TypeOfCondition)EditorGUILayout.EnumPopup("Type of new condition: ", option);
         
-        for (int i = 0; i < BSconnection.IntBasedConditions.Count; i++)
-        {
-           ModifyIntCondition(BSconnection.IntBasedConditions[i]);
-        }
+        ModifyIntConditions();
+        ModifyFloatConditions();
+        ModifyBoolConditions();
+        ModifyStringConditions();
 
-        for (int i = 0; i < BSconnection.FloatBasedConditions.Count; i++)
-        {
-           ModifyFloatCondition(BSconnection.FloatBasedConditions[i]);
-        }
-
-        for (int i = 0; i < BSconnection.BoolBasedConditions.Count; i++)
-        {
-           ModifyBoolCondition(BSconnection.BoolBasedConditions[i]);
-        }
-
-        for (int i = 0; i < BSconnection.StringBasedConditions.Count; i++)
-        {
-           ModifyStringCondition(BSconnection.StringBasedConditions[i]);
-        }
         
         if (GUILayout.Button("Add condition"))
         {
@@ -110,25 +105,26 @@ public class Connection
         
     }
 
-    private void ModifyIntCondition(IntBasedCondition condition)
+    private void ModifyIntConditions()
     {
-        IntBasedCondition tempCondition = condition;
-        GUILayout.BeginVertical();
-        GUILayout.BeginHorizontal();
-        string newConditionName = tempCondition.conditionName;
-        Operation newConditionOperation = tempCondition.operation;
-        int newVariable1 = tempCondition.variable1;
-        int newVariable2 = tempCondition.variable2;
-        newConditionName = EditorGUILayout.TextField(newConditionName);
-            
-        newVariable2 = EditorGUILayout.IntField(newVariable2);
-        EditorGUIUtility.labelWidth = 35;
-        newConditionOperation = (Operation)EditorGUILayout.EnumPopup("INT" ,newConditionOperation, GUILayout.ExpandWidth(false));    
-        EditorGUIUtility.labelWidth = 0;       
-        IntBasedCondition tempCondition2 = new IntBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2);  
-        condition = tempCondition2;    
-        GUILayout.EndVertical();
-        GUILayout.EndHorizontal();
+        for (int i = 0; i < this.intBasedConditions.Count; i++)
+        {
+            IntBasedCondition tempCondition = this.intBasedConditions[i];
+            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
+            string newConditionName = tempCondition.conditionName;
+            Operation newConditionOperation = tempCondition.operation;
+            int newVariable1 = tempCondition.variable1;
+            int newVariable2 = tempCondition.variable2;
+            newConditionName = EditorGUILayout.TextField(newConditionName);
+            newVariable2 = EditorGUILayout.IntField(newVariable2);
+            EditorGUIUtility.labelWidth = 35;
+            newConditionOperation = (Operation)EditorGUILayout.EnumPopup("INT" ,newConditionOperation, GUILayout.ExpandWidth(false));    
+            EditorGUIUtility.labelWidth = 0;       
+            this.intBasedConditions[i] = new IntBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2);  
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }
 
     }
 
@@ -139,29 +135,31 @@ public class Connection
         int newVariable1 = 0;
         int newVariable2 = 0;
         this.tempIntBasedCondition = new IntBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2); 
-        BSconnection.IntBasedConditions.Add(tempIntBasedCondition);       
+        this.intBasedConditions.Add(tempIntBasedCondition);       
     }
 
-    private void ModifyFloatCondition(FloatBasedCondition condition)
+    private void ModifyFloatConditions()
     {
-        FloatBasedCondition tempCondition = condition;
-        GUILayout.BeginVertical();
-        GUILayout.BeginHorizontal();
-        string newConditionName = tempCondition.conditionName;
-        Operation newConditionOperation = tempCondition.operation;
-        float newVariable1 = tempCondition.variable1;
-        float newVariable2 = tempCondition.variable2;
-        newConditionName = EditorGUILayout.TextField(newConditionName);
-            
-        newVariable2 = EditorGUILayout.FloatField(newVariable2);
-        EditorGUIUtility.labelWidth = 35;
-        newConditionOperation = (Operation)EditorGUILayout.EnumPopup("FLOAT" ,newConditionOperation, GUILayout.ExpandWidth(false));    
-        EditorGUIUtility.labelWidth = 0;       
-        FloatBasedCondition tempCondition2 = new FloatBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2);  
-        condition = tempCondition2;    
-        GUILayout.EndVertical();
-        GUILayout.EndHorizontal();
 
+        for (int i = 0; i < this.floatBasedConditions.Count; i++)
+        {
+            FloatBasedCondition tempCondition = this.floatBasedConditions[i];
+            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
+            string newConditionName = tempCondition.conditionName;
+            Operation newConditionOperation = tempCondition.operation;
+            float newVariable1 = tempCondition.variable1;
+            float newVariable2 = tempCondition.variable2;
+            newConditionName = EditorGUILayout.TextField(newConditionName);
+                
+            newVariable2 = EditorGUILayout.FloatField(newVariable2);
+            EditorGUIUtility.labelWidth = 35;
+            newConditionOperation = (Operation)EditorGUILayout.EnumPopup("FLOAT" ,newConditionOperation, GUILayout.ExpandWidth(false));    
+            EditorGUIUtility.labelWidth = 0;       
+            this.floatBasedConditions[i] = new FloatBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2);  
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }      
     }
 
     private void AddFloatCondition()
@@ -171,28 +169,32 @@ public class Connection
         float newVariable1 = 0.0f;
         float newVariable2 = 0.0f;
         this.tempFloatBasedCondition = new FloatBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2); 
-        BSconnection.FloatBasedConditions.Add(tempFloatBasedCondition);       
+        this.floatBasedConditions.Add(tempFloatBasedCondition);       
     }
 
-    private void ModifyBoolCondition(BoolBasedCondition condition)
+    private void ModifyBoolConditions()
     {
-        BoolBasedCondition tempCondition = condition;
-        GUILayout.BeginVertical();
-        GUILayout.BeginHorizontal();
-        string newConditionName = tempCondition.conditionName;
-        Operation newConditionOperation = tempCondition.operation;
-        bool newVariable1 = tempCondition.variable1;
-        bool newVariable2 = tempCondition.variable2;
-        newConditionName = EditorGUILayout.TextField(newConditionName);
-            
-        newVariable2 = EditorGUILayout.Toggle(newVariable2);
-        EditorGUIUtility.labelWidth = 35;
-        newConditionOperation = (Operation)EditorGUILayout.EnumPopup("BOOL" ,newConditionOperation, GUILayout.ExpandWidth(false));    
-        EditorGUIUtility.labelWidth = 0;       
-        BoolBasedCondition tempCondition2 = new BoolBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2);  
-        condition = tempCondition2;    
-        GUILayout.EndVertical();
-        GUILayout.EndHorizontal();
+
+        for (int i = 0; i < this.boolBasedConditions.Count; i++)
+        {
+            BoolBasedCondition tempCondition = this.boolBasedConditions[i];
+            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
+            string newConditionName = tempCondition.conditionName;
+            Operation newConditionOperation = tempCondition.operation;
+            bool newVariable1 = tempCondition.variable1;
+            bool newVariable2 = tempCondition.variable2;
+            newConditionName = EditorGUILayout.TextField(newConditionName);
+                
+            newVariable2 = EditorGUILayout.Toggle(newVariable2);
+            EditorGUIUtility.labelWidth = 35;
+            newConditionOperation = (Operation)EditorGUILayout.EnumPopup("BOOL" ,newConditionOperation, GUILayout.ExpandWidth(false));    
+            EditorGUIUtility.labelWidth = 0;       
+            this.boolBasedConditions[i] = new BoolBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2);    
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }
+        
 
     }
 
@@ -203,28 +205,30 @@ public class Connection
         bool newVariable1 = false;
         bool newVariable2 = true;
         this.tempBoolBasedCondition = new BoolBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2); 
-        BSconnection.BoolBasedConditions.Add(tempBoolBasedCondition);       
+        this.boolBasedConditions.Add(tempBoolBasedCondition);       
     }
 
-    private void ModifyStringCondition(StringBasedCondition condition)
+    private void ModifyStringConditions()
     {
-        StringBasedCondition tempCondition = condition;
-        GUILayout.BeginVertical();
-        GUILayout.BeginHorizontal();
-        string newConditionName = tempCondition.conditionName;
-        Operation newConditionOperation = tempCondition.operation;
-        string newVariable1 = tempCondition.variable1;
-        string newVariable2 = tempCondition.variable2;
-        newConditionName = EditorGUILayout.TextField(newConditionName);
-            
-        newVariable2 = EditorGUILayout.TextField(newVariable2);
-        EditorGUIUtility.labelWidth = 35;
-        newConditionOperation = (Operation)EditorGUILayout.EnumPopup("STRING" ,newConditionOperation, GUILayout.ExpandWidth(false));    
-        EditorGUIUtility.labelWidth = 0;       
-        StringBasedCondition tempCondition2 = new StringBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2);  
-        condition = tempCondition2;    
-        GUILayout.EndVertical();
-        GUILayout.EndHorizontal();
+        for (int i = 0; i < this.stringBasedConditions.Count; i++)
+        {
+            StringBasedCondition tempCondition = this.stringBasedConditions[i];
+            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
+            string newConditionName = tempCondition.conditionName;
+            Operation newConditionOperation = tempCondition.operation;
+            string newVariable1 = tempCondition.variable1;
+            string newVariable2 = tempCondition.variable2;
+            newConditionName = EditorGUILayout.TextField(newConditionName);
+                
+            newVariable2 = EditorGUILayout.TextField(newVariable2);
+            EditorGUIUtility.labelWidth = 35;
+            newConditionOperation = (Operation)EditorGUILayout.EnumPopup("STRING" ,newConditionOperation, GUILayout.ExpandWidth(false));    
+            EditorGUIUtility.labelWidth = 0;       
+            this.stringBasedConditions[i] = new StringBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2);  
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }       
 
     }
 
@@ -235,7 +239,27 @@ public class Connection
         string newVariable1 = "";
         string newVariable2 = "";
         this.tempStringBasedCondition = new StringBasedCondition(newConditionName, newConditionOperation, newVariable1, newVariable2); 
-        BSconnection.StringBasedConditions.Add(tempStringBasedCondition);       
+        this.stringBasedConditions.Add(tempStringBasedCondition);       
+    }
+
+    public void ConvertAllConditionsToString()
+    {
+        foreach(IntBasedCondition condition in intBasedConditions)
+        {
+            this.intBasedConditionsToString.Add(condition.ToString());
+        }
+        foreach(FloatBasedCondition condition in floatBasedConditions)
+        {
+            this.floatBasedConditionsToString.Add(condition.ToString());
+        }
+        foreach(BoolBasedCondition condition in boolBasedConditions)
+        {
+            this.boolBasedConditionsToString.Add(condition.ToString());
+        }
+        foreach(StringBasedCondition condition in stringBasedConditions)
+        {
+            this.stringBasedConditionsToString.Add(condition.ToString());
+        }
     }
     
 
