@@ -25,6 +25,7 @@ public class BehaviourTreeEditor : EditorWindow
 
     public Vector2 offset;
     public Vector2 drag;
+    int nextNodeID = 0;
 
     [MenuItem("Window/Node Based Editor")]
     public static void OpenWindow()
@@ -232,7 +233,8 @@ public class BehaviourTreeEditor : EditorWindow
         {
             nodes = new List<Node>();
         }
-        nodes.Add(new Node(mousePosition, 200, 50, nodeStyle, selectedNodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode, OnMarkAsOriginalNode));
+        nodes.Add(new Node(mousePosition, 200, 50, nodeStyle, selectedNodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode, OnMarkAsOriginalNode, nextNodeID.ToString()));
+        nextNodeID++;
     }
 
     public void OnMarkAsOriginalNode(Node node)
@@ -347,10 +349,13 @@ public class BehaviourTreeEditor : EditorWindow
         }
         Connection tempConnection = new Connection(selectedInPoint, selectedOutPoint, OnClickRemoveConnection);
         connections.Add(tempConnection);
+        tempConnection.nextNodeID = selectedInPoint.node.nodeID;
+        Debug.Log(selectedInPoint.node.nodeID);
         for (int i = 0; i < nodes.Count; i++)
         {
             if (nodes[i].outPoint  == selectedOutPoint)
             {
+                tempConnection.previousNodeID = nodes[i].nodeID;
                 nodes[i].connections.Add(tempConnection);
                 return;
             }
@@ -379,6 +384,8 @@ public class BehaviourTreeEditor : EditorWindow
         for(int i = 0; i < newBehaviourTreePrefab.connections.Count; i++)
         {
             newBehaviourTreePrefab.connections[i].ConvertAllConditionsToString();
+            Debug.Log(newBehaviourTreePrefab.connections[i].previousNodeID);
+            Debug.Log(newBehaviourTreePrefab.connections[i].nextNodeID);
         }
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

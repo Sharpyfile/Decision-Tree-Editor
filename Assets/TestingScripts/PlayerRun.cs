@@ -7,5 +7,6 @@ public class PlayerRun : BehaviourState
     public override void BehaviourStateUpdate()
     {
         Debug.Log("Player Run");
+        
     }   
 }

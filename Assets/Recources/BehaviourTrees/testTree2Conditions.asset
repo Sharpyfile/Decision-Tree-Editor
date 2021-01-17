@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4118448a4a5fa614eadb61378a44205b, type: 3}
-  m_Name: testTree
+  m_Name: testTree2Conditions
   m_EditorClassIdentifier: 
   testing:
   - test,IsGreater,0,100
@@ -20,16 +20,20 @@ MonoBehaviour:
     floatBasedConditionsToString: []
     boolBasedConditionsToString: []
     stringBasedConditionsToString: []
-  - intBasedConditionsToString: []
-    floatBasedConditionsToString:
-    - testing,IsGreater,0,50
+    previousNodeID: 0
+    nextNodeID: 1
+  - intBasedConditionsToString:
+    - test2,IsGreater,0,20
+    floatBasedConditionsToString: []
     boolBasedConditionsToString: []
     stringBasedConditionsToString: []
+    previousNodeID: 0
+    nextNodeID: 2
   nodes:
   - rect:
       serializedVersion: 2
-      x: 88
-      y: 214
+      x: 24
+      y: 234
       width: 200
       height: 50
     title: 
@@ -37,12 +41,22 @@ MonoBehaviour:
     isSelected: 0
     tempScript: {fileID: 11500000, guid: a66dc0f83ee73204ea4bd71ffdd5066f, type: 3}
     classType: PlayerIdle
+    nodeID: 0
     connections:
     - intBasedConditionsToString:
       - test,IsGreater,0,100
       floatBasedConditionsToString: []
       boolBasedConditionsToString: []
       stringBasedConditionsToString: []
+      previousNodeID: 0
+      nextNodeID: 1
+    - intBasedConditionsToString:
+      - test2,IsGreater,0,20
+      floatBasedConditionsToString: []
+      boolBasedConditionsToString: []
+      stringBasedConditionsToString: []
+      previousNodeID: 0
+      nextNodeID: 2
     style:
       m_Name: 
       m_Normal:
@@ -249,8 +263,8 @@ MonoBehaviour:
       m_StretchHeight: 0
   - rect:
       serializedVersion: 2
-      x: 697
-      y: 218
+      x: 597
+      y: 110
       width: 200
       height: 50
     title: 
@@ -258,12 +272,8 @@ MonoBehaviour:
     isSelected: 0
     tempScript: {fileID: 11500000, guid: eb0db2cd78112314c9953ebc676c12f1, type: 3}
     classType: PlayerMove
-    connections:
-    - intBasedConditionsToString: []
-      floatBasedConditionsToString:
-      - testing,IsGreater,0,50
-      boolBasedConditionsToString: []
-      stringBasedConditionsToString: []
+    nodeID: 1
+    connections: []
     style:
       m_Name: 
       m_Normal:
@@ -470,8 +480,8 @@ MonoBehaviour:
       m_StretchHeight: 0
   - rect:
       serializedVersion: 2
-      x: 1255
-      y: 215
+      x: 618
+      y: 381
       width: 200
       height: 50
     title: 
@@ -479,6 +489,7 @@ MonoBehaviour:
     isSelected: 0
     tempScript: {fileID: 11500000, guid: f9cb4ca4f45ac8743a29fb9e0970ca5c, type: 3}
     classType: PlayerRun
+    nodeID: 2
     connections: []
     style:
       m_Name: 

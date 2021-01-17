@@ -23,6 +23,9 @@ public class Connection
     public FloatBasedCondition tempFloatBasedCondition;
     public BoolBasedCondition tempBoolBasedCondition;
     public StringBasedCondition tempStringBasedCondition;
+    
+    public string previousNodeID;
+    public string nextNodeID;
     Vector2 scrollView;
     public Connection(ConnectionPoint inPoint, ConnectionPoint outPoint, Action<Connection> OnClickRemoveConnection)
     {

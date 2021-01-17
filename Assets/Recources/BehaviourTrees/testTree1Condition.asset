@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4118448a4a5fa614eadb61378a44205b, type: 3}
-  m_Name: testTree1Connection
+  m_Name: testTree1Condition
   m_EditorClassIdentifier: 
   testing:
   - test,IsGreater,0,100
@@ -20,11 +20,13 @@ MonoBehaviour:
     floatBasedConditionsToString: []
     boolBasedConditionsToString: []
     stringBasedConditionsToString: []
+    previousNodeID: 0
+    nextNodeID: 1
   nodes:
   - rect:
       serializedVersion: 2
-      x: 77
-      y: 240
+      x: 76
+      y: 201
       width: 200
       height: 50
     title: 
@@ -32,12 +34,15 @@ MonoBehaviour:
     isSelected: 0
     tempScript: {fileID: 11500000, guid: a66dc0f83ee73204ea4bd71ffdd5066f, type: 3}
     classType: PlayerIdle
+    nodeID: 0
     connections:
     - intBasedConditionsToString:
       - test,IsGreater,0,100
       floatBasedConditionsToString: []
       boolBasedConditionsToString: []
       stringBasedConditionsToString: []
+      previousNodeID: 0
+      nextNodeID: 1
     style:
       m_Name: 
       m_Normal:
@@ -244,8 +249,8 @@ MonoBehaviour:
       m_StretchHeight: 0
   - rect:
       serializedVersion: 2
-      x: 682
-      y: 261
+      x: 615
+      y: 190
       width: 200
       height: 50
     title: 
@@ -253,6 +258,7 @@ MonoBehaviour:
     isSelected: 0
     tempScript: {fileID: 11500000, guid: f9cb4ca4f45ac8743a29fb9e0970ca5c, type: 3}
     classType: PlayerRun
+    nodeID: 1
     connections: []
     style:
       m_Name: 

@@ -40,11 +40,8 @@ public class BehaviourTreeComponent : MonoBehaviour
                 ConvertStringToConditions(tempBSConnection, tempConnections[j]);
                 behaviourStates[i].stateConnections.Add(tempBSConnection);
                 this.connectionsList.Add(tempBSConnection);
-                Debug.Log(behaviourTreePrefab.nodes.FindAll(x => x.outPoint == tempConnections[j].outPoint)[0].classType.ToString());
-                Debug.Log(behaviourTreePrefab.nodes.FindAll(x => x.outPoint == tempConnections[j].outPoint)[1].classType.ToString());
-                behaviourStates[i].stateConnections[j].nextState = behaviourStates[behaviourTreePrefab.nodes.FindIndex(x => x.inPoint == tempConnections[j].inPoint)];
+                behaviourStates[i].stateConnections[j].nextState = behaviourStates[behaviourTreePrefab.nodes.FindIndex(x => x.nodeID == tempConnections[j].nextNodeID)];
                 Debug.Log(behaviourStates[i].stateConnections[j].nextState.GetType().ToString());
-
             }
         }
     }

@@ -14,6 +14,7 @@ public class Node
     public ConnectionPoint outPoint;
     public MonoScript tempScript = null;
     public string classType;
+    public string nodeID;
     public List<Connection> connections = new List<Connection>();
     public GUIStyle style;
     public GUIStyle defaultNodeStyle;
@@ -31,7 +32,8 @@ public class Node
                     Action<ConnectionPoint> OnClickInPoint, 
                     Action<ConnectionPoint> OnClickOutPoint,
                     Action<Node> OnClickRemoveNode,
-                    Action<Node> OnClickMarkAsOriginalNode)
+                    Action<Node> OnClickMarkAsOriginalNode,
+                    string nodeID)
     {
         rect = new Rect(position.x, position.y, width, height);
         style = nodeStyle;
@@ -41,6 +43,7 @@ public class Node
         selectedtNodeStyle = selectedStyle;
         OnRemoveNode = OnClickRemoveNode;
         OnMarkAsOriginalNode = OnClickMarkAsOriginalNode;
+        this.nodeID = nodeID;
     }
 
     public void Drag(Vector2 delta)
