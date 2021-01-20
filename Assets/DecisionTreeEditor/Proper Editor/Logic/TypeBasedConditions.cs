@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 
 public enum Operation
@@ -158,7 +159,7 @@ public static class ConditionValidator
         }
     }
 
-    public static bool CheckConnectionConditions(BehaviourStateConnection connection)
+    public static bool CheckConnectionConditions(DecisionTreeConnection connection)
     {
         foreach(IntBasedCondition condition in connection.IntBasedConditions)
         {
@@ -182,5 +183,103 @@ public static class ConditionValidator
         }
         return true;
     }
+
+    public static void ConvertStringToConditions(DecisionTreeConnection connection, Connection editorConnection)
+    {
+        foreach(string condition in editorConnection.intBasedConditionsToString)
+        {
+            IntBasedCondition newCondition = new IntBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = int.Parse(parts[2]);
+            newCondition.variable2 = Int16.Parse(parts[3]);
+            connection.IntBasedConditions.Add(newCondition);
+        }
+
+        foreach(string condition in editorConnection.floatBasedConditionsToString)
+        {
+            FloatBasedCondition newCondition = new FloatBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = float.Parse(parts[2]);
+            newCondition.variable2 = float.Parse(parts[3]);
+            connection.FloatBasedConditions.Add(newCondition);
+        }
+
+        foreach(string condition in editorConnection.boolBasedConditionsToString)
+        {
+            BoolBasedCondition newCondition = new BoolBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = bool.Parse(parts[2]);
+            newCondition.variable2 = bool.Parse(parts[3]);
+            connection.BoolBasedConditions.Add(newCondition);
+        }
+
+        foreach(string condition in editorConnection.stringBasedConditionsToString)
+        {
+            StringBasedCondition newCondition = new StringBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = parts[2];
+            newCondition.variable2 = parts[3];
+            connection.StringBasedConditions.Add(newCondition);
+        }
+    }
+
+    // Used to convert loaded conditions into proper ones
+    public static void ConvertStringToConditions(Connection newConnection, Connection editorConnection)
+    {
+        foreach(string condition in editorConnection.intBasedConditionsToString)
+        {
+            IntBasedCondition newCondition = new IntBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = int.Parse(parts[2]);
+            newCondition.variable2 = Int16.Parse(parts[3]);
+            newConnection.intBasedConditions.Add(newCondition);
+        }
+
+        foreach(string condition in editorConnection.floatBasedConditionsToString)
+        {
+            FloatBasedCondition newCondition = new FloatBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = float.Parse(parts[2]);
+            newCondition.variable2 = float.Parse(parts[3]);
+            newConnection.floatBasedConditions.Add(newCondition);
+        }
+
+        foreach(string condition in editorConnection.boolBasedConditionsToString)
+        {
+            BoolBasedCondition newCondition = new BoolBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = bool.Parse(parts[2]);
+            newCondition.variable2 = bool.Parse(parts[3]);
+            newConnection.boolBasedConditions.Add(newCondition);
+        }
+
+        foreach(string condition in editorConnection.stringBasedConditionsToString)
+        {
+            StringBasedCondition newCondition = new StringBasedCondition();
+            string[] parts = condition.Split(',');
+            newCondition.conditionName = parts[0];
+            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
+            newCondition.variable1 = parts[2];
+            newCondition.variable2 = parts[3];
+            newConnection.stringBasedConditions.Add(newCondition);
+        }
+    }
+
+    
 }
+
 

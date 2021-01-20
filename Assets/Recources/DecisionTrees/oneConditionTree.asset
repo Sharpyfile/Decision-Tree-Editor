@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4118448a4a5fa614eadb61378a44205b, type: 3}
-  m_Name: testTree2Conditions
+  m_Script: {fileID: 11500000, guid: 9aad6b0c34fcb184c9ffaf019f3355d5, type: 3}
+  m_Name: oneConditionTree
   m_EditorClassIdentifier: 
   testing:
   - test,IsGreater,0,100
@@ -22,18 +22,12 @@ MonoBehaviour:
     stringBasedConditionsToString: []
     previousNodeID: 0
     nextNodeID: 1
-  - intBasedConditionsToString:
-    - test2,IsGreater,0,20
-    floatBasedConditionsToString: []
-    boolBasedConditionsToString: []
-    stringBasedConditionsToString: []
-    previousNodeID: 0
-    nextNodeID: 2
+    connectionTrait: {fileID: 11400000, guid: e27e3f07b057207479418a5124769dc8, type: 2}
   nodes:
   - rect:
       serializedVersion: 2
-      x: 24
-      y: 234
+      x: 137
+      y: 249
       width: 200
       height: 50
     title: 
@@ -50,13 +44,8 @@ MonoBehaviour:
       stringBasedConditionsToString: []
       previousNodeID: 0
       nextNodeID: 1
-    - intBasedConditionsToString:
-      - test2,IsGreater,0,20
-      floatBasedConditionsToString: []
-      boolBasedConditionsToString: []
-      stringBasedConditionsToString: []
-      previousNodeID: 0
-      nextNodeID: 2
+      connectionTrait: {fileID: 11400000, guid: e27e3f07b057207479418a5124769dc8,
+        type: 2}
     style:
       m_Name: 
       m_Normal:
@@ -263,225 +252,8 @@ MonoBehaviour:
       m_StretchHeight: 0
   - rect:
       serializedVersion: 2
-      x: 597
-      y: 110
-      width: 200
-      height: 50
-    title: 
-    isDragged: 0
-    isSelected: 0
-    tempScript: {fileID: 11500000, guid: eb0db2cd78112314c9953ebc676c12f1, type: 3}
-    classType: PlayerMove
-    nodeID: 1
-    connections: []
-    style:
-      m_Name: 
-      m_Normal:
-        m_Background: {fileID: -3453378117783705200, guid: 0000000000000000d000000000000000,
-          type: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Hover:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Active:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Focused:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnNormal:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnHover:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnActive:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnFocused:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Border:
-        m_Left: 12
-        m_Right: 12
-        m_Top: 12
-        m_Bottom: 12
-      m_Margin:
-        m_Left: 0
-        m_Right: 0
-        m_Top: 0
-        m_Bottom: 0
-      m_Padding:
-        m_Left: 0
-        m_Right: 0
-        m_Top: 0
-        m_Bottom: 0
-      m_Overflow:
-        m_Left: 0
-        m_Right: 0
-        m_Top: 0
-        m_Bottom: 0
-      m_Font: {fileID: 0}
-      m_FontSize: 0
-      m_FontStyle: 0
-      m_Alignment: 0
-      m_WordWrap: 0
-      m_RichText: 1
-      m_TextClipping: 0
-      m_ImagePosition: 0
-      m_ContentOffset: {x: 0, y: 0}
-      m_FixedWidth: 0
-      m_FixedHeight: 0
-      m_StretchWidth: 1
-      m_StretchHeight: 0
-    defaultNodeStyle:
-      m_Name: 
-      m_Normal:
-        m_Background: {fileID: -3453378117783705200, guid: 0000000000000000d000000000000000,
-          type: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Hover:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Active:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Focused:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnNormal:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnHover:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnActive:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnFocused:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Border:
-        m_Left: 12
-        m_Right: 12
-        m_Top: 12
-        m_Bottom: 12
-      m_Margin:
-        m_Left: 0
-        m_Right: 0
-        m_Top: 0
-        m_Bottom: 0
-      m_Padding:
-        m_Left: 0
-        m_Right: 0
-        m_Top: 0
-        m_Bottom: 0
-      m_Overflow:
-        m_Left: 0
-        m_Right: 0
-        m_Top: 0
-        m_Bottom: 0
-      m_Font: {fileID: 0}
-      m_FontSize: 0
-      m_FontStyle: 0
-      m_Alignment: 0
-      m_WordWrap: 0
-      m_RichText: 1
-      m_TextClipping: 0
-      m_ImagePosition: 0
-      m_ContentOffset: {x: 0, y: 0}
-      m_FixedWidth: 0
-      m_FixedHeight: 0
-      m_StretchWidth: 1
-      m_StretchHeight: 0
-    selectedtNodeStyle:
-      m_Name: 
-      m_Normal:
-        m_Background: {fileID: 7126082630596479001, guid: 0000000000000000d000000000000000,
-          type: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Hover:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Active:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Focused:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnNormal:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnHover:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnActive:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_OnFocused:
-        m_Background: {fileID: 0}
-        m_ScaledBackgrounds: []
-        m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-      m_Border:
-        m_Left: 12
-        m_Right: 12
-        m_Top: 12
-        m_Bottom: 12
-      m_Margin:
-        m_Left: 0
-        m_Right: 0
-        m_Top: 0
-        m_Bottom: 0
-      m_Padding:
-        m_Left: 0
-        m_Right: 0
-        m_Top: 0
-        m_Bottom: 0
-      m_Overflow:
-        m_Left: 0
-        m_Right: 0
-        m_Top: 0
-        m_Bottom: 0
-      m_Font: {fileID: 0}
-      m_FontSize: 0
-      m_FontStyle: 0
-      m_Alignment: 0
-      m_WordWrap: 0
-      m_RichText: 1
-      m_TextClipping: 0
-      m_ImagePosition: 0
-      m_ContentOffset: {x: 0, y: 0}
-      m_FixedWidth: 0
-      m_FixedHeight: 0
-      m_StretchWidth: 1
-      m_StretchHeight: 0
-  - rect:
-      serializedVersion: 2
-      x: 618
-      y: 381
+      x: 824
+      y: 190
       width: 200
       height: 50
     title: 
@@ -489,7 +261,7 @@ MonoBehaviour:
     isSelected: 0
     tempScript: {fileID: 11500000, guid: f9cb4ca4f45ac8743a29fb9e0970ca5c, type: 3}
     classType: PlayerRun
-    nodeID: 2
+    nodeID: 1
     connections: []
     style:
       m_Name: 

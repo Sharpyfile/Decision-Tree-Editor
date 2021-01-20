@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BehaviourStateConnection
+public class DecisionTreeConnection
 {
 
-    public BehaviourStateConnection()
+    public DecisionTreeConnection()
     {
         this.IntBasedConditions = new List<IntBasedCondition>();
         this.FloatBasedConditions = new List<FloatBasedCondition>();
@@ -19,9 +19,11 @@ public class BehaviourStateConnection
     public List<FloatBasedCondition> FloatBasedConditions; 
     public List<BoolBasedCondition> BoolBasedConditions; 
     public List<StringBasedCondition> StringBasedConditions; 
+    public Trait connectionTrait = null;
 
     public bool CheckStateConditions()
     {
+        
         return ConditionValidator.CheckConnectionConditions(this);
     }
 

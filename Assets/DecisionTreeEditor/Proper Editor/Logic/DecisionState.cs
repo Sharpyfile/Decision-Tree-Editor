@@ -7,9 +7,9 @@ public class BehaviourState : ScriptableObject
     //Object that will be added directly to the scene
     public GameObject parentObject = null;
 
-    public List<BehaviourStateConnection> stateConnections = new List<BehaviourStateConnection>();
+    public List<DecisionTreeConnection> stateConnections = new List<DecisionTreeConnection>();
 
-    public BehaviourTreeComponent BehaviourTree = null;
+    public DecisionTreeComponent BehaviourTree = null;
 
 
     //The equivalent of Update in MonoBehaviour. Override it throught the script 

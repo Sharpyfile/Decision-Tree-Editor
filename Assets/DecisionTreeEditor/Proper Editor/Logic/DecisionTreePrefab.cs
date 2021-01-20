@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [SerializeField]
-public class BehaviourTreePrefab : ScriptableObject
+public class DecisionTreePrefab : ScriptableObject
 {
     public List<string> testing;
     public List<Connection> connections;

@@ -11,7 +11,6 @@ public class Connection
     public Action<Connection> OnClickRemoveConnection;
     TypeOfCondition option;
     public List<IntBasedCondition> intBasedConditions;
-
     public List<string> intBasedConditionsToString;
     public List<FloatBasedCondition> floatBasedConditions; 
     public List<string> floatBasedConditionsToString;
@@ -27,6 +26,7 @@ public class Connection
     public string previousNodeID;
     public string nextNodeID;
     Vector2 scrollView;
+    public Trait connectionTrait;
     public Connection(ConnectionPoint inPoint, ConnectionPoint outPoint, Action<Connection> OnClickRemoveConnection)
     {
         this.inPoint = inPoint;
@@ -40,6 +40,7 @@ public class Connection
         this.floatBasedConditionsToString = new List<string>();
         this.boolBasedConditionsToString = new List<string>();
         this.stringBasedConditionsToString = new List<string>();
+        this.connectionTrait = null;
     }
 
     public void Draw()
@@ -69,6 +70,7 @@ public class Connection
                 OnClickRemoveConnection(this);
             }
         }
+        connectionTrait = EditorGUILayout.ObjectField(connectionTrait, typeof(ScriptableObject), true) as Trait;
         
         option = (TypeOfCondition)EditorGUILayout.EnumPopup("Type of new condition: ", option);
         

@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BehaviourTreeComponent : MonoBehaviour
+public class DecisionTreeComponent : MonoBehaviour
 {
     private BehaviourState currentState = null;
-    private List<BehaviourStateConnection> connectionsList = new List<BehaviourStateConnection>();
+    private List<DecisionTreeConnection> connectionsList = new List<DecisionTreeConnection>();
     private List<BehaviourState> behaviourStates = new List<BehaviourState>();
     public List<Trait> traits = new List<Trait>();
-    public BehaviourTreePrefab behaviourTreePrefab;
+    public DecisionTreePrefab decisionTreePrefab;
     private void Start()
     {       
-        BehaviourState tempState1 = (BehaviourState)Activator.CreateInstance(Type.GetType(behaviourTreePrefab.nodes[behaviourTreePrefab.originalNodeIndex].classType));
+        BehaviourState tempState1 = (BehaviourState)Activator.CreateInstance(Type.GetType(decisionTreePrefab.nodes[decisionTreePrefab.originalNodeIndex].classType));
         tempState1.BehaviourTree = this;
         behaviourStates.Add(tempState1);
         currentState = tempState1;
 
-        for(int i = 1; i < behaviourTreePrefab.nodes.Count; i++)
+        for(int i = 1; i < decisionTreePrefab.nodes.Count; i++)
         {
-            BehaviourState tempState2 = Activator.CreateInstance(Type.GetType(behaviourTreePrefab.nodes[i].classType)) as BehaviourState;
+            BehaviourState tempState2 = Activator.CreateInstance(Type.GetType(decisionTreePrefab.nodes[i].classType)) as BehaviourState;
             tempState2.BehaviourTree  = this;
             behaviourStates.Add(tempState2);
         }
@@ -33,15 +33,17 @@ public class BehaviourTreeComponent : MonoBehaviour
         for(int i = 0; i < behaviourStates.Count; i++)
         {
             List<Connection> tempConnections = new List<Connection>();
-            tempConnections = behaviourTreePrefab.connections.FindAll(x => x.outPoint == behaviourTreePrefab.nodes[i].outPoint);
+            tempConnections = decisionTreePrefab.connections.FindAll(x => x.outPoint == decisionTreePrefab.nodes[i].outPoint);
             for (int j = 0; j < tempConnections.Count; j++)
             {
-                BehaviourStateConnection tempBSConnection = new BehaviourStateConnection();
-                ConvertStringToConditions(tempBSConnection, tempConnections[j]);
-                behaviourStates[i].stateConnections.Add(tempBSConnection);
-                this.connectionsList.Add(tempBSConnection);
-                behaviourStates[i].stateConnections[j].nextState = behaviourStates[behaviourTreePrefab.nodes.FindIndex(x => x.nodeID == tempConnections[j].nextNodeID)];
+                DecisionTreeConnection tempDSConnection = new DecisionTreeConnection();
+                ConditionValidator.ConvertStringToConditions(tempDSConnection, tempConnections[j]);
+                behaviourStates[i].stateConnections.Add(tempDSConnection);
+                this.connectionsList.Add(tempDSConnection);
+                behaviourStates[i].stateConnections[j].nextState = behaviourStates[decisionTreePrefab.nodes.FindIndex(x => x.nodeID == tempConnections[j].nextNodeID)];
+                behaviourStates[i].stateConnections[j].connectionTrait = tempConnections[j].connectionTrait;
                 Debug.Log(behaviourStates[i].stateConnections[j].nextState.GetType().ToString());
+                Debug.Log(behaviourStates[i].stateConnections[j].connectionTrait.traitName);
             }
         }
     }
@@ -55,13 +57,19 @@ public class BehaviourTreeComponent : MonoBehaviour
 
     private bool CheckStateConditions()
     {
-        foreach(BehaviourStateConnection connection in currentState.stateConnections)
+
+        
+        foreach(DecisionTreeConnection connection in currentState.stateConnections)
         {
-            if(connection.CheckStateConditions())
+            if (traits.Contains(connection.connectionTrait))
             {
-                currentState = connection.nextState;
-                return true;
+                if(connection.CheckStateConditions())
+                {
+                    currentState = connection.nextState;
+                    return true;
+                }
             }
+            
         }
         return false;
     }
@@ -77,7 +85,7 @@ public class BehaviourTreeComponent : MonoBehaviour
                 {
                     connectionsList[j].FloatBasedConditions[i]  = new FloatBasedCondition(connectionsList[j].FloatBasedConditions[i].conditionName, 
                     connectionsList[j].FloatBasedConditions[i].operation, value, connectionsList[j].FloatBasedConditions[i].variable2);
-                    return;
+
                 }
             
             }
@@ -94,7 +102,7 @@ public class BehaviourTreeComponent : MonoBehaviour
                 {
                     connectionsList[j].IntBasedConditions[i]  = new IntBasedCondition(connectionsList[j].IntBasedConditions[i].conditionName, 
                     connectionsList[j].IntBasedConditions[i].operation, value, connectionsList[j].IntBasedConditions[i].variable2);
-                    return;
+
                 }
             
             }
@@ -112,7 +120,7 @@ public class BehaviourTreeComponent : MonoBehaviour
                 {
                     connectionsList[j].BoolBasedConditions[i]  = new BoolBasedCondition(connectionsList[j].BoolBasedConditions[i].conditionName, 
                     connectionsList[j].BoolBasedConditions[i].operation, value, connectionsList[j].BoolBasedConditions[i].variable2);
-                    return;
+
                 }
             
             }
@@ -129,58 +137,13 @@ public class BehaviourTreeComponent : MonoBehaviour
                 {
                     connectionsList[j].StringBasedConditions[i]  = new StringBasedCondition(connectionsList[j].StringBasedConditions[i].conditionName, 
                     connectionsList[j].StringBasedConditions[i].operation, value, connectionsList[j].StringBasedConditions[i].variable2);
-                    return;
+
                 }
             
             }
         }
     }  
 
-    private void ConvertStringToConditions(BehaviourStateConnection connection, Connection editorConnection)
-    {
-        foreach(string condition in editorConnection.intBasedConditionsToString)
-        {
-            IntBasedCondition newCondition = new IntBasedCondition();
-            string[] parts = condition.Split(',');
-            newCondition.conditionName = parts[0];
-            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
-            newCondition.variable1 = int.Parse(parts[2]);
-            newCondition.variable2 = Int16.Parse(parts[3]);
-            connection.IntBasedConditions.Add(newCondition);
-        }
-
-        foreach(string condition in editorConnection.floatBasedConditionsToString)
-        {
-            FloatBasedCondition newCondition = new FloatBasedCondition();
-            string[] parts = condition.Split(',');
-            newCondition.conditionName = parts[0];
-            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
-            newCondition.variable1 = float.Parse(parts[2]);
-            newCondition.variable2 = float.Parse(parts[3]);
-            connection.FloatBasedConditions.Add(newCondition);
-        }
-
-        foreach(string condition in editorConnection.boolBasedConditionsToString)
-        {
-            BoolBasedCondition newCondition = new BoolBasedCondition();
-            string[] parts = condition.Split(',');
-            newCondition.conditionName = parts[0];
-            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
-            newCondition.variable1 = bool.Parse(parts[2]);
-            newCondition.variable2 = bool.Parse(parts[3]);
-            connection.BoolBasedConditions.Add(newCondition);
-        }
-
-        foreach(string condition in editorConnection.stringBasedConditionsToString)
-        {
-            StringBasedCondition newCondition = new StringBasedCondition();
-            string[] parts = condition.Split(',');
-            newCondition.conditionName = parts[0];
-            newCondition.operation = (Operation)Enum.Parse(typeof(Operation), parts[1]);
-            newCondition.variable1 = parts[2];
-            newCondition.variable2 = parts[3];
-            connection.StringBasedConditions.Add(newCondition);
-        }
-    }
+    
 
 }

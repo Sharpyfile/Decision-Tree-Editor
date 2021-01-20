@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BehaviourTreeEditor : EditorWindow
+public class DecisionTreeEditor : EditorWindow
 {  
-    public static BehaviourTreePrefab behaviourTreePrefab;
-    public string newBehaviourTreePrefabName = "";
+    public DecisionTreePrefab DecisionTreePrefab = null;
+    public string newDecisionTreePrefabName = "";
     [SerializeField]
     public List<Node> nodes;
     [SerializeField]
@@ -22,7 +22,6 @@ public class BehaviourTreeEditor : EditorWindow
     public int originalNodeIndex;
     public ConnectionPoint selectedInPoint;
     public ConnectionPoint selectedOutPoint;
-
     public Vector2 offset;
     public Vector2 drag;
     int nextNodeID = 0;
@@ -30,13 +29,13 @@ public class BehaviourTreeEditor : EditorWindow
     [MenuItem("Window/Node Based Editor")]
     public static void OpenWindow()
     {
-        BehaviourTreeEditor window = GetWindow<BehaviourTreeEditor>();
+        DecisionTreeEditor window = GetWindow<DecisionTreeEditor>();
         window.titleContent = new GUIContent("Node Based Editor");
     }
 
     public void OnEnable()
     {
-        behaviourTreePrefab = (BehaviourTreePrefab)ScriptableObject.CreateInstance(typeof(BehaviourTreePrefab));
+        DecisionTreePrefab = (DecisionTreePrefab)ScriptableObject.CreateInstance(typeof(DecisionTreePrefab));
 
         nodeStyle = new GUIStyle();
         nodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
@@ -72,17 +71,70 @@ public class BehaviourTreeEditor : EditorWindow
         DrawGrid(100, 0.4f, Color.gray);
 
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Save behaviour tree"))
-            SaveBehaviourTreePrefab();
-        GUILayout.Button("Load");
-        GUILayout.Button("New");
-        EditorGUILayout.EndHorizontal();      
+        
 
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Name of current Behaviour Tree");
-        newBehaviourTreePrefabName = EditorGUILayout.TextField(newBehaviourTreePrefabName); 
-        EditorGUILayout.EndHorizontal();   
+        EditorGUIUtility.labelWidth = 10;
+        EditorGUILayout.LabelField("Decision tree to load");
+        EditorGUIUtility.labelWidth = 0;
+        DecisionTreePrefab = EditorGUILayout.ObjectField(DecisionTreePrefab, typeof(ScriptableObject), true) as DecisionTreePrefab;
+        if (GUILayout.Button("Load"))
+        {
+            if (this.nodes != null)
+            {
+                this.nodes.Clear();
+            }
+            else
+            {
+                this.nodes = new List<Node>();
+            }
+            
+            foreach(Node node in DecisionTreePrefab.nodes)
+            {
+                nodes.Add(new Node(node.rect.position, 200, 50, nodeStyle, selectedNodeStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode, OnMarkAsOriginalNode, nextNodeID.ToString()));
+                nodes[nodes.Count - 1].tempScript = node.tempScript;
+                nextNodeID++;
+            }
+            
+            if (this.connections != null)
+            {
+                this.connections.Clear();
+            }
+            else
+            {
+                this.connections = new List<Connection>();
+            }
+            foreach(Connection connection in DecisionTreePrefab.connections)
+            {
+                Connection tempConnection = new Connection(nodes[int.Parse(connection.nextNodeID)].inPoint, nodes[int.Parse(connection.previousNodeID)].outPoint, OnClickRemoveConnection);
+                ConditionValidator.ConvertStringToConditions(tempConnection, connection);
+                tempConnection.previousNodeID = connection.previousNodeID;
+                tempConnection.nextNodeID = connection.nextNodeID;
+                tempConnection.connectionTrait = connection.connectionTrait;
+                Debug.Log(tempConnection.intBasedConditions[0].ToString());
+                connections.Add(tempConnection);
+            }    
+            originalNode = this.nodes[DecisionTreePrefab.originalNodeIndex];
+            originalNode.defaultNodeStyle = originalNodeStyle;
+            originalNode.selectedtNodeStyle = originalSelectedNodeStyle;
+            GUI.changed = true;   
+            Repaint();     
+        }
+        
 
+        if (GUILayout.Button("New"))
+        {
+            this.nodes.Clear();
+            this.connections.Clear();
+            this.originalNode = null;
+            GUI.changed = true;
+        }
+        EditorGUIUtility.labelWidth = 5;
+        EditorGUILayout.LabelField("Name of tree");
+        EditorGUIUtility.labelWidth = 0;
+        newDecisionTreePrefabName = EditorGUILayout.TextField(newDecisionTreePrefabName); 
+        if (GUILayout.Button("Save decision tree"))
+            SaveDecisionTreePrefab();
+        EditorGUILayout.EndHorizontal();     
         DrawNodes();
         DrawConnections();        
 
@@ -368,24 +420,24 @@ public class BehaviourTreeEditor : EditorWindow
         selectedOutPoint = null;
     }
 
-    public void SaveBehaviourTreePrefab()
+    public void SaveDecisionTreePrefab()
     {
-        string behaviourTreePrefabPath = "Assets/Recources/BehaviourTrees/" + newBehaviourTreePrefabName;
-        BehaviourTreePrefab newBehaviourTreePrefab = (BehaviourTreePrefab)ScriptableObject.CreateInstance(typeof(BehaviourTreePrefab));
-        AssetDatabase.CreateAsset(newBehaviourTreePrefab, behaviourTreePrefabPath + ".asset");
-        newBehaviourTreePrefab = (BehaviourTreePrefab)AssetDatabase.LoadAssetAtPath(behaviourTreePrefabPath + ".asset", typeof(BehaviourTreePrefab));
-        EditorUtility.SetDirty(newBehaviourTreePrefab);
+        string DecisionTreePrefabPath = "Assets/Recources/DecisionTrees/" + newDecisionTreePrefabName;
+        DecisionTreePrefab newDecisionTreePrefab = (DecisionTreePrefab)ScriptableObject.CreateInstance(typeof(DecisionTreePrefab));
+        AssetDatabase.CreateAsset(newDecisionTreePrefab, DecisionTreePrefabPath + ".asset");
+        newDecisionTreePrefab = (DecisionTreePrefab)AssetDatabase.LoadAssetAtPath(DecisionTreePrefabPath + ".asset", typeof(DecisionTreePrefab));
+        EditorUtility.SetDirty(newDecisionTreePrefab);
 
-        newBehaviourTreePrefab.nodes = new List<Node>(this.nodes);      
-        newBehaviourTreePrefab.connections = new List<Connection>(this.connections);      
-        newBehaviourTreePrefab.originalNodeIndex = this.originalNodeIndex;
-        newBehaviourTreePrefab.testing = new List<string>();
-        newBehaviourTreePrefab.testing.Add(connections[0].intBasedConditions[0].ToString());   
-        for(int i = 0; i < newBehaviourTreePrefab.connections.Count; i++)
+        newDecisionTreePrefab.nodes = new List<Node>(this.nodes);      
+        newDecisionTreePrefab.connections = new List<Connection>(this.connections);      
+        newDecisionTreePrefab.originalNodeIndex = this.originalNodeIndex;
+        newDecisionTreePrefab.testing = new List<string>();
+        newDecisionTreePrefab.testing.Add(connections[0].intBasedConditions[0].ToString());   
+        for(int i = 0; i < newDecisionTreePrefab.connections.Count; i++)
         {
-            newBehaviourTreePrefab.connections[i].ConvertAllConditionsToString();
-            Debug.Log(newBehaviourTreePrefab.connections[i].previousNodeID);
-            Debug.Log(newBehaviourTreePrefab.connections[i].nextNodeID);
+            newDecisionTreePrefab.connections[i].ConvertAllConditionsToString();
+            Debug.Log(newDecisionTreePrefab.connections[i].previousNodeID);
+            Debug.Log(newDecisionTreePrefab.connections[i].nextNodeID);
         }
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
