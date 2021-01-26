@@ -12,14 +12,14 @@ public class DecisionTreeComponent : MonoBehaviour
     public DecisionTreePrefab decisionTreePrefab;
     private void Start()
     {       
-        DecisionState tempState1 = ScriptableObject.CreateInstance(Type.GetType(decisionTreePrefab.nodes[decisionTreePrefab.originalNodeIndex].classType)) as DecisionState;
+        DecisionState tempState1 = ScriptableObject.CreateInstance(Type.GetType(decisionTreePrefab.nodeContainers[decisionTreePrefab.originalNodeIndex].classType)) as DecisionState;
         tempState1.DecisionTree = GetComponent<DecisionTreeComponent>();
         decisionStates.Add(tempState1);
         currentState = tempState1;
 
-        for(int i = 1; i < decisionTreePrefab.nodes.Count; i++)
+        for(int i = 1; i < decisionTreePrefab.nodeContainers.Count; i++)
         {
-            DecisionState tempState2 = ScriptableObject.CreateInstance(Type.GetType(decisionTreePrefab.nodes[i].classType)) as DecisionState;
+            DecisionState tempState2 = ScriptableObject.CreateInstance(Type.GetType(decisionTreePrefab.nodeContainers[i].classType)) as DecisionState;
             tempState2.DecisionTree  = this;
             decisionStates.Add(tempState2);
         }
@@ -27,15 +27,15 @@ public class DecisionTreeComponent : MonoBehaviour
         // Do przepisania
         for(int i = 0; i < decisionStates.Count; i++)
         {
-            List<Connection> tempConnections = new List<Connection>();
-            tempConnections = decisionTreePrefab.connections.FindAll(x => x.previousNodeID == decisionTreePrefab.nodes[i].nodeID);
+            List<ConnectionContainer> tempConnections = new List<ConnectionContainer>();
+            tempConnections = decisionTreePrefab.connectionContainers.FindAll(x => x.previousNodeID == decisionTreePrefab.nodeContainers[i].nodeID);
             for (int j = 0; j < tempConnections.Count; j++)
             {
                 DecisionTreeConnection tempDSConnection = new DecisionTreeConnection();
                 ConditionValidator.ConvertStringToConditions(tempDSConnection, tempConnections[j]);
                 decisionStates[i].stateConnections.Add(tempDSConnection);
                 this.connectionsList.Add(tempDSConnection);
-                decisionStates[i].stateConnections[j].nextState = decisionStates[decisionTreePrefab.nodes.FindIndex(x => x.nodeID == tempConnections[j].nextNodeID)];
+                decisionStates[i].stateConnections[j].nextState = decisionStates[decisionTreePrefab.nodeContainers.FindIndex(x => x.nodeID == tempConnections[j].nextNodeID)];
                 decisionStates[i].stateConnections[j].connectionTrait = tempConnections[j].connectionTrait;
             }
         }
@@ -139,6 +139,30 @@ public class DecisionTreeComponent : MonoBehaviour
             }
         }
     }  
+
+    public void SetString(string conditionName, List<string> traits)
+    {
+        for(int j= 0; j < connectionsList.Count; j++)
+        {
+            for(int i = 0; i < connectionsList[j].StringBasedConditions.Count; i++)
+            {
+            
+                if (connectionsList[j].StringBasedConditions[i].conditionName == conditionName)
+                {
+                    if (traits.Contains(connectionsList[j].StringBasedConditions[i].variable2))
+                        {
+                            connectionsList[j].StringBasedConditions[i]  = new StringBasedCondition(connectionsList[j].StringBasedConditions[i].conditionName, 
+                            connectionsList[j].StringBasedConditions[i].operation, connectionsList[j].StringBasedConditions[i].variable2, connectionsList[j].StringBasedConditions[i].variable2);
+                        }
+                    
+
+                }
+            
+            }
+        }
+    }  
+
+
 
     public void StartTreeFromBeggining()
     {

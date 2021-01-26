@@ -3,6 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[Serializable]
+public class ConnectionContainer
+{
+    public List<string> intBasedConditions;
+    public List<string> floatBasedConditions;
+    public List<string> boolBasedConditions;
+    public List<string> stringBasedConditions;
+    public Trait connectionTrait;
+    public string previousNodeID;
+    public string nextNodeID;
+
+    public ConnectionContainer()
+    {
+        intBasedConditions = new List<string>();
+        floatBasedConditions = new List<string>();
+        boolBasedConditions = new List<string>();
+        stringBasedConditions = new List<string>();
+    }
+    
+}
+
+[Serializable]
+public struct NodeContainer
+{
+    public string nodeID;
+    public string classType;
+}
 
 public enum Operation
 {
@@ -184,9 +211,9 @@ public static class ConditionValidator
         return true;
     }
 
-    public static void ConvertStringToConditions(DecisionTreeConnection connection, Connection editorConnection)
+    public static void ConvertStringToConditions(DecisionTreeConnection connection, ConnectionContainer editorConnection)
     {
-        foreach(string condition in editorConnection.intBasedConditionsToString)
+        foreach(string condition in editorConnection.intBasedConditions)
         {
             IntBasedCondition newCondition = new IntBasedCondition();
             string[] parts = condition.Split(',');
@@ -197,7 +224,7 @@ public static class ConditionValidator
             connection.IntBasedConditions.Add(newCondition);
         }
 
-        foreach(string condition in editorConnection.floatBasedConditionsToString)
+        foreach(string condition in editorConnection.floatBasedConditions)
         {
             FloatBasedCondition newCondition = new FloatBasedCondition();
             string[] parts = condition.Split(',');
@@ -208,7 +235,7 @@ public static class ConditionValidator
             connection.FloatBasedConditions.Add(newCondition);
         }
 
-        foreach(string condition in editorConnection.boolBasedConditionsToString)
+        foreach(string condition in editorConnection.boolBasedConditions)
         {
             BoolBasedCondition newCondition = new BoolBasedCondition();
             string[] parts = condition.Split(',');
@@ -219,7 +246,7 @@ public static class ConditionValidator
             connection.BoolBasedConditions.Add(newCondition);
         }
 
-        foreach(string condition in editorConnection.stringBasedConditionsToString)
+        foreach(string condition in editorConnection.stringBasedConditions)
         {
             StringBasedCondition newCondition = new StringBasedCondition();
             string[] parts = condition.Split(',');

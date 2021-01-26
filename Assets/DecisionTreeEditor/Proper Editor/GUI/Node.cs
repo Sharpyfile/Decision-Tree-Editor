@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,9 @@ public class Node
     public bool isSelected;
     public ConnectionPoint inPoint;
     public ConnectionPoint outPoint;
+#if UNITY_EDITOR
     public MonoScript tempScript = null;
+#endif
     public string classType;
     public string nodeID;
     public List<Connection> connections = new List<Connection>();
@@ -45,7 +49,7 @@ public class Node
         OnMarkAsOriginalNode = OnClickMarkAsOriginalNode;
         this.nodeID = nodeID;
     }
-
+    #if UNITY_EDITOR
     public void Drag(Vector2 delta)
     {
         rect.position += delta;
@@ -135,4 +139,5 @@ public class Node
             OnMarkAsOriginalNode(this);
         }
     }
+    #endif
 }

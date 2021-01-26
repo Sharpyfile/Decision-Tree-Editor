@@ -5,8 +5,7 @@ using UnityEngine;
 [SerializeField]
 public class DecisionTreePrefab : ScriptableObject
 {
-    public List<string> testing;
-    public List<Connection> connections;
-    public List<Node> nodes;
+    public List<ConnectionContainer> connectionContainers;
+    public List<NodeContainer> nodeContainers;
     public int originalNodeIndex;
 }

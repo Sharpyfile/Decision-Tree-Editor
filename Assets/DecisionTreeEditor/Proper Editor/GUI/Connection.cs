@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections.Generic;
 
 [Serializable]
@@ -42,7 +44,7 @@ public class Connection
         this.stringBasedConditionsToString = new List<string>();
         this.connectionTrait = null;
     }
-
+#if UNITY_EDITOR
     public void Draw()
     {
         Handles.DrawBezier(
@@ -247,6 +249,8 @@ public class Connection
         this.stringBasedConditions.Add(tempStringBasedCondition);       
     }
 
+#endif
+
     public void ConvertAllConditionsToString()
     {
         foreach(IntBasedCondition condition in intBasedConditions)
@@ -264,6 +268,26 @@ public class Connection
         foreach(StringBasedCondition condition in stringBasedConditions)
         {
             this.stringBasedConditionsToString.Add(condition.ToString());
+        }
+    }
+
+    public void ConvertAllConditionsToString(ConnectionContainer connectionContainer)
+    {
+        foreach(IntBasedCondition condition in intBasedConditions)
+        {
+            connectionContainer.intBasedConditions.Add(condition.ToString());
+        }
+        foreach(FloatBasedCondition condition in floatBasedConditions)
+        {
+            connectionContainer.floatBasedConditions.Add(condition.ToString());
+        }
+        foreach(BoolBasedCondition condition in boolBasedConditions)
+        {
+            connectionContainer.boolBasedConditions.Add(condition.ToString());
+        }
+        foreach(StringBasedCondition condition in stringBasedConditions)
+        {
+            connectionContainer.stringBasedConditions.Add(condition.ToString());
         }
     }
     
