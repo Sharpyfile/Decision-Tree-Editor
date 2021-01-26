@@ -16,6 +16,7 @@ public class NPC_Trait_Assignment : MonoBehaviour
             DecisionTreeComponent tree = NPC.GetComponent<DecisionTreeComponent>();
             tree.traits.Add(movementTraits[Random.Range(0, movementTraits.Count)]);
             tree.traits.Add(dialogTraits[Random.Range(0, dialogTraits.Count)]);
+            NPC.GetComponent<Renderer>().material.color = Random.ColorHSV();
             randomness++;
         }
     }

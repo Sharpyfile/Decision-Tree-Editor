@@ -4,15 +4,21 @@ using UnityEngine.UI;
 public class NPC_Talk_Rozmowny : DecisionState
 {
     private string textString = "Hello, how are you? Isnt it a great day?";
-    private Text characterText;
-    private Text characterTraits;
+    private TextMesh characterText;
+    private TextMesh characterTraits;
     private Rigidbody rigidbody;
 
     // Start is called before the first frame update
     public override void DecisionStateStart()
     {
-        characterText = GameObject.Find("CharacterText").GetComponent<Text>();
-        characterTraits = GameObject.Find("CharacterTraits").GetComponent<Text>();
+        foreach(TextMesh textMesh in this.DecisionTree.GetComponentsInChildren<TextMesh>())
+        {
+            if (textMesh.name == "NPC_Dialog")
+                characterText = textMesh;
+            else if (textMesh.name == "NPC_Traits")
+                characterTraits = textMesh;
+        }
+
         rigidbody = this.DecisionTree.GetComponent<Rigidbody>();
         
     }

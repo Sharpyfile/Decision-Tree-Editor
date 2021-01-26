@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CanvasText
   - NPC
+  - Dragon
   layers:
   - Default
   - TransparentFX

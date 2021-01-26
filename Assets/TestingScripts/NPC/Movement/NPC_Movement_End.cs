@@ -4,15 +4,22 @@ using UnityEngine.UI;
 public class NPC_Movement_End : DecisionState
 {
     private string textString = "";
-    private Text characterText;
-    private Text characterTraits;
+    private TextMesh characterText;
+    private TextMesh characterTraits;
     private Rigidbody rigidbody;
 
     // Start is called before the first frame update
     public override void DecisionStateStart()
     {
-        characterText = GameObject.Find("CharacterText").GetComponent<Text>();
-        characterTraits = GameObject.Find("CharacterTraits").GetComponent<Text>();
+        foreach(TextMesh textMesh in this.DecisionTree.GetComponentsInChildren<TextMesh>())
+        {
+            if (textMesh.name == "NPC_Dialog")
+                characterText = textMesh;
+            else if (textMesh.name == "NPC_Traits")
+                characterTraits = textMesh;
+        }
+
+        rigidbody = this.DecisionTree.GetComponent<Rigidbody>();
         
     }
     public override void DecisionStateUpdate()
@@ -21,6 +28,7 @@ public class NPC_Movement_End : DecisionState
 
         string traits = "";
         characterTraits.text = traits;
+        this.DecisionTree.SetFloat("dragonDistance", 0);  
         
         this.DecisionTree.StartTreeFromBeggining();
 

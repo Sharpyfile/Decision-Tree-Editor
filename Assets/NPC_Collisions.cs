@@ -17,11 +17,11 @@ public class NPC_Collisions : MonoBehaviour
             this.GetComponent<DecisionTreeComponent>().SetBool("playerInside", true);
             this.GetComponent<DecisionTreeComponent>().SetBool("playerOutside", false);
         }
-        // else if (other.CompareTag("Dragon"))
-        // {
-        //     this.GetComponent<DecisionTreeComponent>().SetBool("dragonInside", true);
-        //     this.GetComponent<DecisionTreeComponent>().SetBool("dragonOutside", false);
-        // }
+        else if (other.CompareTag("Dragon"))
+        {
+            this.GetComponent<DecisionTreeComponent>().SetBool("dragonInside", true);
+            this.GetComponent<DecisionTreeComponent>().SetBool("dragonOutside", false);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -31,10 +31,10 @@ public class NPC_Collisions : MonoBehaviour
             this.GetComponent<DecisionTreeComponent>().SetBool("playerInside", false);
             this.GetComponent<DecisionTreeComponent>().SetBool("playerOutside", true);
         }
-        // else if (other.CompareTag("Dragon"))
-        // {
-        //     this.GetComponent<DecisionTreeComponent>().SetBool("dragonInside", false);
-        //     this.GetComponent<DecisionTreeComponent>().SetBool("dragonOutside", true);
-        // }
+        else if (other.CompareTag("Dragon"))
+        {
+            this.GetComponent<DecisionTreeComponent>().SetBool("dragonInside", false);
+            this.GetComponent<DecisionTreeComponent>().SetBool("dragonOutside", true);
+        }
     }
 }
