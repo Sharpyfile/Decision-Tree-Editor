@@ -14,7 +14,7 @@ public class DecisionTreeConnection
         this.StringBasedConditions = new List<StringBasedCondition>();
     }
 
-    public BehaviourState nextState = null;
+    public DecisionState nextState = null;
     public List<IntBasedCondition> IntBasedConditions; 
     public List<FloatBasedCondition> FloatBasedConditions; 
     public List<BoolBasedCondition> BoolBasedConditions; 

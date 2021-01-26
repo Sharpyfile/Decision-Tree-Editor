@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRun : BehaviourState
+public class PlayerRun : DecisionState
 {
-    public override void BehaviourStateUpdate()
+    public override void DecisionStateStart()
     {
-        Debug.Log("Player Run");
+        Debug.Log("AAAA...");
+    }
+    public override void DecisionStateUpdate()
+    {
         
     }   
 }

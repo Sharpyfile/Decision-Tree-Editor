@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerIdle : BehaviourState
+public class PlayerIdle : DecisionState
 {
     int test = 0;
     int test2 = 0;
-    public override void BehaviourStateUpdate()
+    public override void DecisionStateStart()
     {
-        // Debug.Log("Player Idle");
-        Debug.Log(test);
+        
+    }
+    public override void DecisionStateUpdate()
+    {
         if (Input.GetKey(KeyCode.Space))
         {
-            this.BehaviourTree.SetInt("test2", test2);
+            this.DecisionTree.SetInt("test2", test2);
             test2 += 10;
         }
             
-        this.BehaviourTree.SetInt("test", test);
+        this.DecisionTree.SetInt("test", test);
         test++;
     }
 }

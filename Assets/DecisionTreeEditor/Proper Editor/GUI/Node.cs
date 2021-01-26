@@ -59,7 +59,7 @@ public class Node
             GUILayout.BeginArea(new Rect(rect.position.x + 10, rect.position.y, rect.width - 20, rect.height - 5));
             GUILayout.Space(10);
             tempScript = EditorGUILayout.ObjectField(tempScript, typeof(MonoScript), false) as MonoScript;
-            if (tempScript != null && tempScript.GetClass().BaseType.Name == "BehaviourState")
+            if (tempScript != null && tempScript.GetClass().BaseType.Name == "DecisionState")
             {
                 classType = tempScript.GetClass().ToString();
             }            

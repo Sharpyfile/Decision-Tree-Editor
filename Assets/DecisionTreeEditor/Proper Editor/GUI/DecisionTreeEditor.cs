@@ -110,7 +110,6 @@ public class DecisionTreeEditor : EditorWindow
                 tempConnection.previousNodeID = connection.previousNodeID;
                 tempConnection.nextNodeID = connection.nextNodeID;
                 tempConnection.connectionTrait = connection.connectionTrait;
-                Debug.Log(tempConnection.intBasedConditions[0].ToString());
                 connections.Add(tempConnection);
             }    
             originalNode = this.nodes[DecisionTreePrefab.originalNodeIndex];
@@ -432,7 +431,6 @@ public class DecisionTreeEditor : EditorWindow
         newDecisionTreePrefab.connections = new List<Connection>(this.connections);      
         newDecisionTreePrefab.originalNodeIndex = this.originalNodeIndex;
         newDecisionTreePrefab.testing = new List<string>();
-        newDecisionTreePrefab.testing.Add(connections[0].intBasedConditions[0].ToString());   
         for(int i = 0; i < newDecisionTreePrefab.connections.Count; i++)
         {
             newDecisionTreePrefab.connections[i].ConvertAllConditionsToString();

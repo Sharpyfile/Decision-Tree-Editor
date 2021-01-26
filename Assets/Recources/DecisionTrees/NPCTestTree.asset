@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9aad6b0c34fcb184c9ffaf019f3355d5, type: 3}
-  m_Name: oneConditionTree
+  m_Name: NPCTestTree
   m_EditorClassIdentifier: 
-  testing:
-  - test,IsGreater,0,100
+  testing: []
   connections:
-  - intBasedConditionsToString:
-    - test,IsGreater,0,100
+  - intBasedConditionsToString: []
     floatBasedConditionsToString: []
     boolBasedConditionsToString: []
     stringBasedConditionsToString: []
@@ -26,19 +24,18 @@ MonoBehaviour:
   nodes:
   - rect:
       serializedVersion: 2
-      x: 137
-      y: 249
+      x: 111
+      y: 264
       width: 200
       height: 50
     title: 
     isDragged: 0
     isSelected: 0
-    tempScript: {fileID: 11500000, guid: a66dc0f83ee73204ea4bd71ffdd5066f, type: 3}
-    classType: PlayerIdle
+    tempScript: {fileID: 11500000, guid: 696837670c6310b44a96535a482da4b9, type: 3}
+    classType: NPCIdle
     nodeID: 0
     connections:
-    - intBasedConditionsToString:
-      - test,IsGreater,0,100
+    - intBasedConditionsToString: []
       floatBasedConditionsToString: []
       boolBasedConditionsToString: []
       stringBasedConditionsToString: []
@@ -252,15 +249,15 @@ MonoBehaviour:
       m_StretchHeight: 0
   - rect:
       serializedVersion: 2
-      x: 824
-      y: 190
+      x: 947
+      y: 227
       width: 200
       height: 50
     title: 
     isDragged: 0
     isSelected: 0
-    tempScript: {fileID: 11500000, guid: f9cb4ca4f45ac8743a29fb9e0970ca5c, type: 3}
-    classType: PlayerRun
+    tempScript: {fileID: 11500000, guid: 38eb3b7792d88f342be253d01bbb11b7, type: 3}
+    classType: NPCJump
     nodeID: 1
     connections: []
     style:
