@@ -3,17 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
 [Serializable]
 public class ConnectionContainer
 {
+    /* Variable: intBasedConditions
+     * List of the condition with type int
+     */
     public List<string> intBasedConditions;
+
+    /* Variable: floatBasedConditions
+     * List of the condition with type float
+     */
     public List<string> floatBasedConditions;
+
+    /* Variable: boolBasedConditions
+     * List of the condition with type bool
+     */
     public List<string> boolBasedConditions;
+
+    /* Variable: stringBasedConditions
+     * List of the condition with type string
+     */
     public List<string> stringBasedConditions;
+
+    /* Variable: connectionTrait
+     * Trait for this connection
+     */
     public Trait connectionTrait;
+
+    /* Variable: previousNodeID
+     * Represents ID of the node that leads to this connection
+     */
     public string previousNodeID;
+
+    /* Variable: nextNodeID
+     * Represents ID of the node that will be next after all conditions in this
+     * connection will be met
+     */
     public string nextNodeID;
 
+    /* Function: ConnectionContainer
+     * Constructor
+     */
     public ConnectionContainer()
     {
         intBasedConditions = new List<string>();
@@ -27,7 +59,14 @@ public class ConnectionContainer
 [Serializable]
 public struct NodeContainer
 {
+    /* Variable: nodeID
+     * Index in the list converted to string
+     */
     public string nodeID;
+
+    /* Variable: classType
+     * Name of the classType used for creating instances
+     */
     public string classType;
 }
 
@@ -49,7 +88,10 @@ public enum TypeOfCondition
 }
 public struct IntBasedCondition
 {
-    
+
+    /* Function: IntBasedCondition
+     * Constructor, takes name of the condition, operation, starting variable (0) and variable to compare to
+     */
     public IntBasedCondition(string conditionName, Operation operation, int variable1, int variable2)
     {
         this.conditionName = conditionName;
@@ -57,16 +99,38 @@ public struct IntBasedCondition
         this.variable1 = variable1;
         this.variable2 = variable2;
     }
+
+    /* Variable: conditionName
+     * Name of the condition
+     */
     public string conditionName {get; set;}
+
+    /* Variable: operation
+     * Operation between two variables
+     */
     public Operation operation {get; set;}
+
+    /* Variable: variable1
+     * Starting variable
+     */
     public int variable1 {get; set;}
+
+    /* Variable: variable2
+     * Variable to compare
+     */
     public int variable2 {get; set;}
 
+    /* Function: ToString
+     * Converts Class to string
+     */
     public override string ToString() => $"{conditionName},{operation},{variable1},{variable2}";
 }
 
 public struct FloatBasedCondition
 {
+    /* Function: FloatBasedCondition
+     * Constructor, takes name of the condition, operation, starting variable (0.0f) and variable to compare to
+     */
     public FloatBasedCondition(string conditionName, Operation operation, float variable1, float variable2)
     {
         this.conditionName = conditionName;
@@ -74,17 +138,39 @@ public struct FloatBasedCondition
         this.variable1 = variable1;
         this.variable2 = variable2;
     }
+
+    /* Variable: conditionName
+     * Name of the condition
+     */
     public string conditionName {get; set;}
+
+    /* Variable: operation
+     * Operation between two variables
+     */
     public Operation operation {get; set;}
+
+    /* Variable: variable1
+     * Starting variable
+     */
     public float variable1 {get; set;}
+
+    /* Variable: variable2
+     * Variable to compare
+     */
     public float variable2 {get; set;}
 
+    /* Function: ToString
+     * Converts Class to string
+     */
     public override string ToString() => $"{conditionName},{operation},{variable1},{variable2}";
 }
 
 
 public struct BoolBasedCondition
 {
+    /* Function: BoolBasedCondition
+     * Constructor, takes name of the condition, operation, starting variable (false) and variable to compare to
+     */
     public BoolBasedCondition(string conditionName, Operation operation, bool variable1, bool variable2)
     {
         this.conditionName = conditionName;
@@ -92,16 +178,39 @@ public struct BoolBasedCondition
         this.variable1 = variable1;
         this.variable2 = variable2;
     }
+
+    /* Variable: conditionName
+     * Name of the condition
+     */
     public string conditionName {get; set;}
+
+    /* Variable: operation
+     * Operation between two variables
+     */
     public Operation operation {get; set;}
+
+    /* Variable: variable1
+     * Starting variable
+     */
     public bool variable1 {get; set;}
+
+    /* Variable: variable2
+     * Variable to compare
+     */
     public bool variable2 {get; set;}
 
+    /* Function: ToString
+     * Converts Class to string
+     */
     public override string ToString() => $"{conditionName},{operation},{variable1},{variable2}";
 }
 
 public struct StringBasedCondition
 {
+
+    /* Function: StringBasedCondition
+     * Constructor, takes name of the condition, operation, starting variable ("") and variable to compare to
+     */
     public StringBasedCondition(string conditionName, Operation operation, string variable1, string variable2)
     {
         this.conditionName = conditionName;
@@ -109,17 +218,40 @@ public struct StringBasedCondition
         this.variable1 = variable1;
         this.variable2 = variable2;
     }
+
+    /* Variable: conditionName
+     * Name of the condition
+     */
     public string conditionName {get; set;}
+
+    /* Variable: operation
+     * Operation between two variables
+     */
     public Operation operation {get; set;}
+
+    /* Variable: variable1
+     * Starting variable
+     */
     public string variable1 {get; set;}
+
+    /* Variable: variable2
+     * Variable to compare
+     */
     public string variable2 {get; set;}
 
+    /* Function: ToString
+     * Converts Class to string
+     */
     public override string ToString() => $"{conditionName},{operation},{variable1},{variable2}";
 }
 
 
 public static class ConditionValidator 
 {
+    /* Function: IntBasedConditionCheck
+     * Takes IntBasedCondition and checks returns true if condition met
+     * else it returns false
+     */
     static bool IntBasedConditionCheck(IntBasedCondition condition)
     {
         switch(condition.operation)
@@ -141,6 +273,10 @@ public static class ConditionValidator
         }
     }
 
+    /* Function: FloatBasedConditionCheck
+     * Takes FloatBasedCondition and checks returns true if condition met
+     * else it returns false
+     */
     static bool FloatBasedConditionCheck(FloatBasedCondition condition)
     {
         switch(condition.operation)
@@ -156,6 +292,10 @@ public static class ConditionValidator
         }
     }
 
+    /* Function: BoolBasedConditionCheck
+     * Takes BoolBasedCondition and checks returns true if condition met
+     * else it returns false
+     */
     static bool BoolBasedConditionCheck(BoolBasedCondition condition)
     {
         switch(condition.operation)
@@ -171,6 +311,10 @@ public static class ConditionValidator
         }
     }
 
+    /* Function: StringBasedConditionCheck
+     * Takes StringBasedCondition and checks returns true if condition met
+     * else it returns false
+     */
     static bool StringBasedConditionCheck(StringBasedCondition condition)
     {
         switch(condition.operation)
@@ -186,6 +330,10 @@ public static class ConditionValidator
         }
     }
 
+    /* Function: CheckConnectionConditions
+     * Takes DecisionTreeConnection and checks all conditions
+     * Returns true if all are met, else returns false
+     */
     public static bool CheckConnectionConditions(DecisionTreeConnection connection)
     {
         foreach(IntBasedCondition condition in connection.IntBasedConditions)
@@ -211,6 +359,11 @@ public static class ConditionValidator
         return true;
     }
 
+    /* Function: ConvertStringToConditions
+     * Takes DecisionTreeConnection and ConnectionContainer and
+     * converts all conditions in string from ConnectionContainer to
+     * proper conditions in DecisionTreeConnection
+     */
     public static void ConvertStringToConditions(DecisionTreeConnection connection, ConnectionContainer editorConnection)
     {
         foreach(string condition in editorConnection.intBasedConditions)
@@ -258,7 +411,11 @@ public static class ConditionValidator
         }
     }
 
-    // Used to convert loaded conditions into proper ones
+    /* Function: ConvertStringToConditions
+     * Takes Connection and Connection and
+     * converts all conditions in string from second Connection to
+     * proper conditions in first Connection
+     */
     public static void ConvertStringToConditions(Connection newConnection, Connection editorConnection)
     {
         foreach(string condition in editorConnection.intBasedConditionsToString)

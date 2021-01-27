@@ -5,11 +5,32 @@ using System;
 
 public class DecisionTreeComponent : MonoBehaviour
 {
+    /* Variable: currentState
+     * Current DecisionState that is executed
+     */
     private DecisionState currentState = null;
+
+    /* Variable: connectionsList
+     * List of DecisionTreeConnection that is used when modifying variables for conditions
+     */
     private List<DecisionTreeConnection> connectionsList = new List<DecisionTreeConnection>();
+
+    /* Variable: decisionStates
+     * List of DecisionState used for choosing a next state
+     */
     private List<DecisionState> decisionStates = new List<DecisionState>();
+
+    /* Variable: traits
+     * List of Trait used to compare them with conditions
+     */
     public List<Trait> traits = new List<Trait>();
+
+    /* Variable: decisionTreePrefab
+     * Prefab that holds all information about DecisionTree
+     */
     public DecisionTreePrefab decisionTreePrefab;
+
+
     private void Start()
     {       
         DecisionState tempState1 = ScriptableObject.CreateInstance(Type.GetType(decisionTreePrefab.nodeContainers[decisionTreePrefab.originalNodeIndex].classType)) as DecisionState;
@@ -24,7 +45,6 @@ public class DecisionTreeComponent : MonoBehaviour
             decisionStates.Add(tempState2);
         }
 
-        // Do przepisania
         for(int i = 0; i < decisionStates.Count; i++)
         {
             List<ConnectionContainer> tempConnections = new List<ConnectionContainer>();
@@ -53,6 +73,10 @@ public class DecisionTreeComponent : MonoBehaviour
         
     }
 
+    /* Function: CheckStateConditions
+     * Checks for conditions in the currentState and swaps it with state that is in the connection
+     * if all conditions in it are met
+     */
     private bool CheckStateConditions()
     {
         foreach(DecisionTreeConnection connection in currentState.stateConnections)
@@ -71,6 +95,9 @@ public class DecisionTreeComponent : MonoBehaviour
         return false;
     }
 
+    /* Function: SetFloat
+     * Sets a variable of type float in the condition of speficic name
+     */
     public void SetFloat(string conditionName, float value)
     {
         for(int j= 0; j < connectionsList.Count; j++)
@@ -88,6 +115,10 @@ public class DecisionTreeComponent : MonoBehaviour
             }
         }
     }
+
+    /* Function: SetInt
+     * Sets a variable of type int in the condition of speficic name
+     */
     public void SetInt(string conditionName, int value)
     {
         for(int j= 0; j < connectionsList.Count; j++)
@@ -105,6 +136,9 @@ public class DecisionTreeComponent : MonoBehaviour
         }
     }
 
+    /* Function: SetBool
+     * Sets a variable of type bool in the condition of speficic name
+     */
     public void SetBool(string conditionName, bool value)
     {
         for(int j= 0; j < connectionsList.Count; j++)
@@ -122,6 +156,10 @@ public class DecisionTreeComponent : MonoBehaviour
             }
         }
     }
+
+    /* Function: SetString
+     * Sets a variable of type string in the condition of speficic name
+     */
     public void SetString(string conditionName, string value)
     {
         for(int j= 0; j < connectionsList.Count; j++)
@@ -138,9 +176,13 @@ public class DecisionTreeComponent : MonoBehaviour
             
             }
         }
-    }  
+    }
 
-    public void SetString(string conditionName, List<string> traits)
+    /* Function: SetString
+     * Checks if one of the strings in the List will met the condition
+     * If yes, set condition to be completed
+     */
+    public void SetString(string conditionName, List<string> strings)
     {
         for(int j= 0; j < connectionsList.Count; j++)
         {
@@ -149,7 +191,7 @@ public class DecisionTreeComponent : MonoBehaviour
             
                 if (connectionsList[j].StringBasedConditions[i].conditionName == conditionName)
                 {
-                    if (traits.Contains(connectionsList[j].StringBasedConditions[i].variable2))
+                    if (strings.Contains(connectionsList[j].StringBasedConditions[i].variable2))
                         {
                             connectionsList[j].StringBasedConditions[i]  = new StringBasedCondition(connectionsList[j].StringBasedConditions[i].conditionName, 
                             connectionsList[j].StringBasedConditions[i].operation, connectionsList[j].StringBasedConditions[i].variable2, connectionsList[j].StringBasedConditions[i].variable2);
@@ -160,10 +202,11 @@ public class DecisionTreeComponent : MonoBehaviour
             
             }
         }
-    }  
+    }
 
-
-
+    /* Function: StartTreeFromBeggining
+     * Forces Decision Tree to start from the original node
+     */
     public void StartTreeFromBeggining()
     {
         this.currentState = decisionStates[0];

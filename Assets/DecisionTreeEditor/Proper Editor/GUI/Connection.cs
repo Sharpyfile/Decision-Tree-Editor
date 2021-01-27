@@ -8,27 +8,111 @@ using System.Collections.Generic;
 [Serializable]
 public class Connection
 {
+    /* Variable: inPoint
+    * ConnectionPoint that leads to the next Node
+    */
     public ConnectionPoint inPoint;
+
+    /* Variable: outPoint
+    * ConnectionPoint that leads to the previous Node
+    */
     public ConnectionPoint outPoint;
+
+    /* Variable: OnClickRemoveConnection
+    * Action that is executed after button is pressed
+    * Removes the condition
+    */
     public Action<Connection> OnClickRemoveConnection;
-    TypeOfCondition option;
+
+    /* Variable: option
+    * Enum TypeOfCondition used for defining type for new condition 
+    */
+    private TypeOfCondition option;
+
+    /* Variable: intBasedConditions
+     * List of the condition with type int
+     */
     public List<IntBasedCondition> intBasedConditions;
+
+    /* Variable: intBasedConditionsToString
+     * List of the condition with type int converted to one string
+     */
     public List<string> intBasedConditionsToString;
-    public List<FloatBasedCondition> floatBasedConditions; 
+
+    /* Variable: floatBasedConditions
+     * List of the condition with type float
+     */
+    public List<FloatBasedCondition> floatBasedConditions;
+
+    /* Variable: floatBasedConditionsToString
+     * List of the condition with type float converted to one string
+     */
     public List<string> floatBasedConditionsToString;
+
+    /* Variable: boolBasedConditions
+     * List of the condition with type bool
+     */
     public List<BoolBasedCondition> boolBasedConditions;
+
+    /* Variable: boolBasedConditionsToString
+     * List of the condition with type bool converted to one string
+     */
     public List<string> boolBasedConditionsToString;
+
+    /* Variable: stringBasedConditions
+     * List of the condition with type string
+     */
     public List<StringBasedCondition> stringBasedConditions;
+
+    /* Variable: stringBasedConditionsToString
+     * List of the condition with type string converted to one string
+     */
     public List<string> stringBasedConditionsToString;
+
+    /* Variable: tempIntBasedCondition
+     * Temporary condition used when adding a new condition
+     */
     public IntBasedCondition tempIntBasedCondition;
-    public FloatBasedCondition tempFloatBasedCondition;
-    public BoolBasedCondition tempBoolBasedCondition;
-    public StringBasedCondition tempStringBasedCondition;
-    
+
+    /* Variable: tempFloatBasedCondition
+     * Temporary condition used when adding a new condition
+     */
+    private FloatBasedCondition tempFloatBasedCondition;
+
+    /* Variable: tempBoolBasedCondition
+     * Temporary condition used when adding a new condition
+     */
+    private BoolBasedCondition tempBoolBasedCondition;
+
+    /* Variable: tempStringBasedCondition
+     * Temporary condition used when adding a new condition
+     */
+    private StringBasedCondition tempStringBasedCondition;
+
+    /* Variable: previousNodeID
+     * Represents ID of the node that leads to this connection
+     */
     public string previousNodeID;
+
+    /* Variable: nextNodeID
+     * Represents ID of the node that will be next after all conditions in this
+     * connection will be met
+     */
     public string nextNodeID;
-    Vector2 scrollView;
+
+    /* Variable: scrollView
+     * Used for scrolling through conditions
+     */
+    private Vector2 scrollView;
+
+    /* Variable: connectionTrait
+     * Trait for this connection
+     */
     public Trait connectionTrait;
+
+    /* Function: Connection
+     * Constructor, takes two ConnectionPoint and Action<Connection> for handling removing connection
+     */
     public Connection(ConnectionPoint inPoint, ConnectionPoint outPoint, Action<Connection> OnClickRemoveConnection)
     {
         this.inPoint = inPoint;
@@ -45,6 +129,11 @@ public class Connection
         this.connectionTrait = null;
     }
 #if UNITY_EDITOR
+
+    /* Function: Draw
+     * Draws Condition  connection between inPoint and outPoint, handles adding and modifying
+     * different conditions
+     */
     public void Draw()
     {
         Handles.DrawBezier(
@@ -112,6 +201,9 @@ public class Connection
         
     }
 
+    /* Function: ModifyIntConditions
+     * Draws GUI responsible for modifying Condition with type int 
+     */
     private void ModifyIntConditions()
     {
         for (int i = 0; i < this.intBasedConditions.Count; i++)
@@ -135,6 +227,9 @@ public class Connection
 
     }
 
+    /* Function: AddIntCondition
+     * Adds new Condition with type int
+     */
     private void AddIntCondition()
     {
         string newConditionName = "New condition";
@@ -145,6 +240,9 @@ public class Connection
         this.intBasedConditions.Add(tempIntBasedCondition);       
     }
 
+    /* Function: ModifyFloatConditions
+     * Draws GUI responsible for modifying Condition with type float 
+     */
     private void ModifyFloatConditions()
     {
 
@@ -169,6 +267,9 @@ public class Connection
         }      
     }
 
+    /* Function: AddFloatCondition
+     * Adds new Condition with type float
+     */
     private void AddFloatCondition()
     {
         string newConditionName = "New condition";
@@ -179,6 +280,9 @@ public class Connection
         this.floatBasedConditions.Add(tempFloatBasedCondition);       
     }
 
+    /* Function: ModifyBoolConditions
+     * Draws GUI responsible for modifying Condition with type bool 
+     */
     private void ModifyBoolConditions()
     {
 
@@ -204,7 +308,9 @@ public class Connection
         
 
     }
-
+    /* Function: AddBoolCondition
+     * Adds new Condition with type bool
+     */
     private void AddBoolCondition()
     {
         string newConditionName = "New condition";
@@ -215,6 +321,9 @@ public class Connection
         this.boolBasedConditions.Add(tempBoolBasedCondition);       
     }
 
+    /* Function: ModifyStringConditions
+     * Draws GUI responsible for modifying Condition with type string 
+     */
     private void ModifyStringConditions()
     {
         for (int i = 0; i < this.stringBasedConditions.Count; i++)
@@ -239,6 +348,9 @@ public class Connection
 
     }
 
+    /* Function: AddStringCondition
+     * Adds new Condition with type string
+     */
     private void AddStringCondition()
     {
         string newConditionName = "New condition";
@@ -251,6 +363,10 @@ public class Connection
 
 #endif
 
+    /* Function: ConvertAllConditionsToString
+     * Converts all conditions in Connection and adds them to specific List<string>
+     * 
+     */
     public void ConvertAllConditionsToString()
     {
         foreach(IntBasedCondition condition in intBasedConditions)
@@ -271,6 +387,10 @@ public class Connection
         }
     }
 
+    /* Function: ConvertAllConditionsToString
+     * Converts all conditions in Connection and adds them to connectionContainer
+     * 
+     */
     public void ConvertAllConditionsToString(ConnectionContainer connectionContainer)
     {
         foreach(IntBasedCondition condition in intBasedConditions)
