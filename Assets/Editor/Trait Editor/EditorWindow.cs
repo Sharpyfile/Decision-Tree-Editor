@@ -2,7 +2,9 @@
 using UnityEditor;
 public class EditorWindowExample : EditorWindow
 {
-    // Create new trait that will be modified
+    /* Variable: trait
+     * Holds a Trait that is later saved
+     */
     static Trait trait;
 
     void OnEnable()
@@ -35,7 +37,9 @@ public class EditorWindowExample : EditorWindow
         }
     }
 
-
+    /* Function: SaveTraitData
+     * Handles saving a Trait with .asset extention
+     */
     void SaveTraitData()
     {
         string traitPath = "Assets/Prefabs/traits/" + trait.traitName;

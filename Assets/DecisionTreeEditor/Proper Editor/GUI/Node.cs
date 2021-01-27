@@ -8,23 +8,88 @@ using System.Collections.Generic;
 [Serializable]
 public class Node
 {
+    /* Variable: rect
+     * Rect used to draw Node
+     */
     public Rect rect;
+
+    /* Variable: title
+    * String used to draw Node
+    */
     public String title;
+
+    /* Variable: isDragged
+    * Defines if node is being dragged
+    */
     public bool isDragged;
+
+    /* Variable: isSelected
+    * Defines if node is selected
+    */
     public bool isSelected;
+
+    /* Variable: inPoint
+    * ConnectionPoint that is on the left side of the node
+    */
     public ConnectionPoint inPoint;
+
+    /* Variable: outPoint
+    * ConnectionPoint that is on the right side of the node
+    */
     public ConnectionPoint outPoint;
 #if UNITY_EDITOR
+
+    /* Variable: tempScript
+    * MonoScript of DecisionState that can be selected
+    * Its then later used to determine classType
+    */
     public MonoScript tempScript = null;
 #endif
+
+    /* Variable: classType
+    * Name of the class of DecisionState
+    */
     public string classType;
+
+    /* Variable: nodeID
+    * ID of the node
+    */
     public string nodeID;
+
+    /* Variable: connections
+    * List of Connection that holds all connections that
+    * goes out of the Node
+    */
     public List<Connection> connections = new List<Connection>();
+
+    /* Variable: style
+    * Current style of the Node
+    */
     public GUIStyle style;
+
+    /* Variable: defaultNodeStyle
+    * Default style of the Node
+    */
     public GUIStyle defaultNodeStyle;
-    public GUIStyle selectedtNodeStyle;
+
+    /* Variable: selectedNodeStyle
+    * Style of the Node if its selected
+    */
+    public GUIStyle selectedNodeStyle;
+
+    /* Variable: OnRemoveNode
+    * Action that is executed if you remove Node
+    */
     public Action<Node> OnRemoveNode;
+
+    /* Variable: OnMarkAsOriginalNode
+    * Action that is executed if mark Node as original
+    */
     public Action<Node> OnMarkAsOriginalNode;
+
+    /* Function: Node
+     * Constructor of the Node
+     */
     public Node(
                     Vector2 position, 
                     float width, 
@@ -44,17 +109,24 @@ public class Node
         inPoint = new ConnectionPoint(this, ConnectionPointType.In, inPointStyle, OnClickInPoint);
         outPoint = new ConnectionPoint(this, ConnectionPointType.Out, outPointStyle, OnClickOutPoint);
         defaultNodeStyle = nodeStyle;
-        selectedtNodeStyle = selectedStyle;
+        selectedNodeStyle = selectedStyle;
         OnRemoveNode = OnClickRemoveNode;
         OnMarkAsOriginalNode = OnClickMarkAsOriginalNode;
         this.nodeID = nodeID;
     }
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
+
+    /* Function: Drag
+     * Handles dragging of the Node
+     */
     public void Drag(Vector2 delta)
     {
         rect.position += delta;
     }
 
+    /* Function: Draw
+     * Handles drawing the Node
+     */
     public void Draw()
     {
             inPoint.Draw();
@@ -71,6 +143,11 @@ public class Node
 
     }
 
+    /* Function: ProcessEvents
+     * Takes Event and executes specific code
+     * Handles selecting Nodes and dragging them 
+     * Returns true on success
+     */
     public bool ProcessEvents(Event e)
     {
         switch (e.type)
@@ -83,7 +160,7 @@ public class Node
                             isDragged = true;
                             GUI.changed = true;
                             isSelected = true;
-                            style = selectedtNodeStyle;
+                            style = selectedNodeStyle;
                         }
                         else
                         {
@@ -116,6 +193,10 @@ public class Node
         return false;
     }
 
+
+    /* Function: ProcessContextMenu
+     * Handles dropdown menu on the Right Mouse Button
+     */
     private void ProcessContextMenu()
     {
         GenericMenu genericMenu = new GenericMenu();
@@ -124,6 +205,9 @@ public class Node
         genericMenu.ShowAsContext();
     }
 
+    /* Function: OnClickRemoveNode
+     * Handles removing Node
+     */
     private void OnClickRemoveNode()
     {
         if (OnRemoveNode != null)
@@ -132,6 +216,9 @@ public class Node
         }
     }
 
+    /* Function: OnClickMarkAsOriginalNode
+     * Handles marking Node as original
+     */
     private void OnClickMarkAsOriginalNode()
     {
         if (OnMarkAsOriginalNode != null)

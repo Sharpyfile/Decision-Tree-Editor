@@ -4,29 +4,101 @@ using UnityEngine;
 using System;
 
 public class DecisionTreeEditor : EditorWindow
-{  
+{
+    /* Variable: DecisionTreePrefab
+     * Prefab that holds all information about DecisionTree
+     */
     public DecisionTreePrefab DecisionTreePrefab = null;
+
+    /* Variable: DecisionTreeEditorPrefab
+    * Prefab that holds all information about DecisionTree with Editor specific
+    * variables
+    */
     public DecisionTreeEditorPrefab DecisionTreeEditorPrefab = null;
+
+    /* Variable: newDecisionTreePrefabName
+    * String that determines new name of the prefab
+    */
     public string newDecisionTreePrefabName = "";
-    [SerializeField]
+
+    /* Variable: nodes
+    * List of Node used for drawing
+    */
     public List<Node> nodes;
-    [SerializeField]
+
+    /* Variable: connections
+    * List of Connection used for drawing
+    */
     public List<Connection> connections;
+
+    /* Variable: nodeStyle
+    * Default style of Node
+    */
     public GUIStyle nodeStyle;
+
+    /* Variable: originalNodeStyle
+    * Style of the Node that is marked as Original
+    */
     public GUIStyle originalNodeStyle;
+
+    /* Variable: selectedNodeStyle
+    * Style of the Node that is selected
+    */
     public GUIStyle selectedNodeStyle;
+
+    /* Variable: originalSelectedNodeStyle
+    * Style of the Node that is marked as Original
+    * and is selected
+    */
     public GUIStyle originalSelectedNodeStyle;
+
+    /* Variable: inPointStyle
+    * Style of the ConnectionPoint on the left of the Node
+    */
     public GUIStyle inPointStyle;
+
+    /* Variable: outPointStyle
+    * Style of the ConnectionPoint on the right of the Node
+    */
     public GUIStyle outPointStyle;
-    [SerializeField]
+
+    /* Variable: originalNode
+    * Node that is currently markes as Original
+    */
     public Node originalNode;
+
+    /* Variable: originalNodeIndex
+    * Index of current original Node
+    */
     public int originalNodeIndex;
+
+    /* Variable: selectedInPoint
+    * Currently selected in ConnectionPoint 
+    */
     public ConnectionPoint selectedInPoint;
+
+    /* Variable: selectedOutPoint
+    * Currently selected out ConnectionPoint 
+    */
     public ConnectionPoint selectedOutPoint;
+
+    /* Variable: offset
+    * Vector2 used for drawing grid 
+    */
     public Vector2 offset;
+
+    /* Variable: drag
+    * Vector2 used dragging the field
+    */
     public Vector2 drag;
+
+    /* Variable: nextNodeID
+    * Variable determining the ID of the currently added Node
+    */
     int nextNodeID = 0;
 
+
+    
     [MenuItem("Window/Node Based Editor")]
     public static void OpenWindow()
     {
@@ -115,7 +187,7 @@ public class DecisionTreeEditor : EditorWindow
             }    
             originalNode = this.nodes[DecisionTreeEditorPrefab.originalNodeIndex];
             originalNode.defaultNodeStyle = originalNodeStyle;
-            originalNode.selectedtNodeStyle = originalSelectedNodeStyle;
+            originalNode.selectedNodeStyle = originalSelectedNodeStyle;
             GUI.changed = true;   
             Repaint();     
         }
@@ -147,6 +219,9 @@ public class DecisionTreeEditor : EditorWindow
             Repaint();
     }
 
+    /* Function: DrawNodes
+    * Handles drawing all Node in nodes
+    */
     public void DrawNodes()
     {
         if (nodes != null)
@@ -159,6 +234,9 @@ public class DecisionTreeEditor : EditorWindow
         }
     }
 
+    /* Function: DrawGrid
+    * Handles drawing grid
+    */
     public void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
     {
         int widthDivs = Mathf.CeilToInt(position.width / gridSpacing);
@@ -184,6 +262,9 @@ public class DecisionTreeEditor : EditorWindow
         Handles.EndGUI();
     }
 
+    /* Function: DrawConnections
+    * Handles drawing all Connection in connections
+    */
     public void DrawConnections()
     {
         if (connections != null)
@@ -195,6 +276,10 @@ public class DecisionTreeEditor : EditorWindow
         }
     }
 
+    /* Function: DrawConnectionLine
+    * Handles drawing all ConnectionLines between ConnectionPoint
+    * and mousePosition
+    */
     public void DrawConnectionLine(Event e)
     {
         if (selectedInPoint != null && selectedOutPoint == null)
@@ -228,6 +313,9 @@ public class DecisionTreeEditor : EditorWindow
         }
     }
 
+    /* Function: ProcessEvents
+    * Handles events based on the Input
+    */
     public void ProcessEvents(Event e)
     {
         drag = Vector2.zero;
@@ -256,6 +344,9 @@ public class DecisionTreeEditor : EditorWindow
         }
     }
 
+    /* Function: ProcessEvents
+    * Handles events of the nodes
+    */
     public void ProcessNodeEvents(Event e)
     {
         if (nodes != null)
@@ -272,6 +363,9 @@ public class DecisionTreeEditor : EditorWindow
         }
     }
 
+    /* Function: ProcessContextMenu
+     * Handles dropdown menu on the Right Mouse Button
+     */
     public void ProcessContextMenu(Vector2 mousePosition)
     {
         GenericMenu genericMenu = new GenericMenu();
@@ -279,6 +373,9 @@ public class DecisionTreeEditor : EditorWindow
         genericMenu.ShowAsContext();
     }
 
+    /* Function: OnClickAddNode
+     * Handles adding a new Node
+     */
     public void OnClickAddNode(Vector2 mousePosition)
     {
         if (nodes == null)
@@ -289,27 +386,33 @@ public class DecisionTreeEditor : EditorWindow
         nextNodeID++;
     }
 
+    /* Function: OnMarkAsOriginalNode
+     * Handles marking a Node as original one
+     */
     public void OnMarkAsOriginalNode(Node node)
     {
         if (originalNode != null && originalNode != node)
         {
             nodes.Find(x => x == originalNode).defaultNodeStyle = nodeStyle;
-            nodes.Find(x => x == originalNode).selectedtNodeStyle = selectedNodeStyle;
+            nodes.Find(x => x == originalNode).selectedNodeStyle = selectedNodeStyle;
             originalNode = node;
             originalNodeIndex = nodes.FindIndex(x => x == node);
             originalNode.defaultNodeStyle = originalNodeStyle;
-            originalNode.selectedtNodeStyle = originalSelectedNodeStyle;
+            originalNode.selectedNodeStyle = originalSelectedNodeStyle;
 
         }
         else
         {
             originalNode = node;
             originalNode.defaultNodeStyle = originalNodeStyle;
-            originalNode.selectedtNodeStyle = originalSelectedNodeStyle;
+            originalNode.selectedNodeStyle = originalSelectedNodeStyle;
         }
         
     }
 
+    /* Function: OnClickRemoveNode
+     * Handles removing a Node
+     */
     public void OnClickRemoveNode(Node node)
     {
         if (connections != null)
@@ -337,6 +440,9 @@ public class DecisionTreeEditor : EditorWindow
         
     }
 
+    /* Function: OnClickInPoint
+     * Handles clicking at the in ConnectionPoint
+     */
     public void OnClickInPoint(ConnectionPoint inPoint)
     {
         selectedInPoint = inPoint;
@@ -355,6 +461,9 @@ public class DecisionTreeEditor : EditorWindow
         }
     }
 
+    /* Function: OnClickOutPoint
+     * Handles clicking at the out ConnectionPoint
+     */
     public void OnClickOutPoint(ConnectionPoint outPoint)
     {
         selectedOutPoint = outPoint;
@@ -373,11 +482,17 @@ public class DecisionTreeEditor : EditorWindow
         }
     }
 
+    /* Function: OnClickRemoveConnection
+     * Handles removing selected Connection
+     */
     public void OnClickRemoveConnection(Connection connection)
     {
         connections.Remove(connection);
     }
 
+    /* Function: OnDrag
+     * Handles dragging a field
+     */
     public void OnDrag(Vector2 delta)
     {
         drag = delta;
@@ -393,6 +508,9 @@ public class DecisionTreeEditor : EditorWindow
         GUI.changed = true;
     }
 
+    /* Function: CreateConnection
+    * Handles creating a new Connection
+    */
     public void CreateConnection()
     {
         if (connections == null)
@@ -413,12 +531,23 @@ public class DecisionTreeEditor : EditorWindow
         }
     }
 
+    /* Function: ClearConnectionSelection
+    * Handles clearing selected ConnectionPoint
+    */
     public void ClearConnectionSelection()
     {
         selectedInPoint = null;
         selectedOutPoint = null;
     }
 
+
+    /* Function: SaveDecisionTreePrefab
+    * Handles saving DecisionTree, it saves two different trees
+    * one to load into the Editor
+    * second to load into the DecisionTreeComponent
+    * Separation is needed because of the build setting in Unity
+    * that does not allow files of .asset extension to be used in Build
+    */
     public void SaveDecisionTreePrefab()
     {
         string DecisionTreePrefabPath = "Assets/Recources/DecisionTrees/" + newDecisionTreePrefabName;
