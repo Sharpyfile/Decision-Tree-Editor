@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DecisionTreeSceneWithNativeTraits.unity
     guid: 9f71fdf08c5e0914983c56a92242c69a
+  - enabled: 1
+    path: Assets/Scenes/DecisionTreeSceneWithNativeTraitsAllInLine.unity
+    guid: ed92b9f8db144b141833dd83e804fbc4
   m_configObjects: {}

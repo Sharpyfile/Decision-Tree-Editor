@@ -83,8 +83,7 @@ public enum TypeOfCondition
     Int,
     Float,
     Bool,
-    String,
-    Trait
+    String
 }
 public struct IntBasedCondition
 {
