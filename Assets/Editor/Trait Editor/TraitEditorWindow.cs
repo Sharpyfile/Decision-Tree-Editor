@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
-public class EditorWindowExample : EditorWindow
+public class TraitEditor : EditorWindow
 {
     /* Variable: trait
      * Holds a Trait that is later saved
@@ -20,7 +20,7 @@ public class EditorWindowExample : EditorWindow
     [MenuItem("Window/Trait Editor")]
     public static void OpenWindow()
     {
-        EditorWindowExample window = (EditorWindowExample)GetWindow(typeof(EditorWindowExample));
+        TraitEditor window = (TraitEditor)GetWindow(typeof(TraitEditor));
     }
 
     private void OnGUI()
@@ -42,7 +42,7 @@ public class EditorWindowExample : EditorWindow
      */
     void SaveTraitData()
     {
-        string traitPath = "Assets/Prefabs/traits/" + trait.traitName;
+        string traitPath = "Assets/Prefabs/Traits/" + trait.traitName;
         // create the .asset file
         Trait newTrait = (Trait)ScriptableObject.CreateInstance(typeof(Trait));
         newTrait.traitName = trait.traitName;

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class NPC_Trait_Assignment : MonoBehaviour
@@ -20,7 +19,4 @@ public class NPC_Trait_Assignment : MonoBehaviour
             randomness++;
         }
     }
-
-    
-
 }

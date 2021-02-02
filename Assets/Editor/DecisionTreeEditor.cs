@@ -99,11 +99,11 @@ public class DecisionTreeEditor : EditorWindow
 
 
     
-    [MenuItem("Window/Node Based Editor")]
+    [MenuItem("Window/Decision Tree Editor")]
     public static void OpenWindow()
     {
         DecisionTreeEditor window = GetWindow<DecisionTreeEditor>();
-        window.titleContent = new GUIContent("Node Based Editor");
+        window.titleContent = new GUIContent("Decision Tree Editor");
     }
 
     public void OnEnable()
@@ -550,8 +550,8 @@ public class DecisionTreeEditor : EditorWindow
     */
     public void SaveDecisionTreePrefab()
     {
-        string DecisionTreePrefabPath = "Assets/Recources/DecisionTrees/" + newDecisionTreePrefabName;
-        string DecisionTreeEditorPrefabPath = "Assets/Recources/DecisionTrees/TreesForEditor/" + newDecisionTreePrefabName;
+        string DecisionTreePrefabPath = "Assets/Resources/DecisionTrees/" + newDecisionTreePrefabName;
+        string DecisionTreeEditorPrefabPath = "Assets/Resources/DecisionTrees/TreesForEditor/" + newDecisionTreePrefabName;
         DecisionTreePrefab newDecisionTreePrefab = (DecisionTreePrefab)ScriptableObject.CreateInstance(typeof(DecisionTreePrefab));
         DecisionTreeEditorPrefab newDecisionTreeEditorPrefab = (DecisionTreeEditorPrefab)ScriptableObject.CreateInstance(typeof(DecisionTreeEditorPrefab));
         AssetDatabase.CreateAsset(newDecisionTreePrefab, DecisionTreePrefabPath + ".asset");

@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aad6b0c34fcb184c9ffaf019f3355d5, type: 3}
+  m_Name: Decision Tree
+  m_EditorClassIdentifier: 
+  connectionContainers:
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - playerInside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 11400000, guid: 15be5f76b8720994d8d6ad92188ef394, type: 2}
+    previousNodeID: 0
+    nextNodeID: 2
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - playerInside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 11400000, guid: 1d49da4d7cbad1447993fb9eb4af4eb2, type: 2}
+    previousNodeID: 0
+    nextNodeID: 3
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - playerInside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 11400000, guid: ab1fe055c7009a44f9b51ccef81d92a7, type: 2}
+    previousNodeID: 0
+    nextNodeID: 4
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - playerInside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 11400000, guid: 13f143257407e56418a951875043e971, type: 2}
+    previousNodeID: 0
+    nextNodeID: 1
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - playerOutside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 0}
+    previousNodeID: 1
+    nextNodeID: 5
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - playerOutside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 0}
+    previousNodeID: 2
+    nextNodeID: 5
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - playerOutside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 0}
+    previousNodeID: 3
+    nextNodeID: 5
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - playerOutside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 0}
+    previousNodeID: 4
+    nextNodeID: 5
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - dragonInside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 11400000, guid: e27e3f07b057207479418a5124769dc8, type: 2}
+    previousNodeID: 0
+    nextNodeID: 6
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - dragonInside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 11400000, guid: c62e20fc94d907c42a51f8dad25eb80f, type: 2}
+    previousNodeID: 0
+    nextNodeID: 7
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - dragonOutside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 0}
+    previousNodeID: 7
+    nextNodeID: 8
+  - intBasedConditions: []
+    floatBasedConditions: []
+    boolBasedConditions:
+    - dragonOutside,IsEqual,False,True
+    stringBasedConditions: []
+    connectionTrait: {fileID: 0}
+    previousNodeID: 6
+    nextNodeID: 9
+  - intBasedConditions: []
+    floatBasedConditions:
+    - dragonDistance,IsGreater,0,10
+    boolBasedConditions: []
+    stringBasedConditions: []
+    connectionTrait: {fileID: 0}
+    previousNodeID: 8
+    nextNodeID: 10
+  - intBasedConditions: []
+    floatBasedConditions:
+    - dragonDistance,IsGreater,0,10
+    boolBasedConditions: []
+    stringBasedConditions: []
+    connectionTrait: {fileID: 0}
+    previousNodeID: 9
+    nextNodeID: 10
+  nodeContainers:
+  - nodeID: 0
+    classType: NPCIdle
+  - nodeID: 1
+    classType: NPC_Talk_Rozmowny
+  - nodeID: 2
+    classType: NPC_Talk_Spokojny
+  - nodeID: 3
+    classType: NPC_Talk_Gniewny
+  - nodeID: 4
+    classType: NPC_Talk_Wstydliwy
+  - nodeID: 5
+    classType: NPC_Talk_End
+  - nodeID: 6
+    classType: NPC_Movement_Brave
+  - nodeID: 7
+    classType: NPC_Movement_Coward
+  - nodeID: 8
+    classType: NPC_Movement_Coward_Retreat
+  - nodeID: 9
+    classType: NPC_Movement_Brave_Retreat
+  - nodeID: 10
+    classType: NPC_Movement_End
+  originalNodeIndex: 0
