@@ -4,9 +4,6 @@ using UnityEngine;
 
 public abstract class DecisionState : ScriptableObject
 {
-    //Object that will be added directly to the scene
-    public GameObject parentObject = null;
-
     public List<DecisionTreeConnection> stateConnections = new List<DecisionTreeConnection>();
 
     public DecisionTreeComponent DecisionTree = null;

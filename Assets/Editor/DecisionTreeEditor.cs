@@ -551,7 +551,7 @@ public class DecisionTreeEditor : EditorWindow
     public void SaveDecisionTreePrefab()
     {
         string DecisionTreePrefabPath = "Assets/Resources/DecisionTrees/" + newDecisionTreePrefabName;
-        string DecisionTreeEditorPrefabPath = "Assets/Resources/DecisionTrees/TreesForEditor/" + newDecisionTreePrefabName;
+        string DecisionTreeEditorPrefabPath = "Assets/Editor/TreesForEditor/" + newDecisionTreePrefabName;
         DecisionTreePrefab newDecisionTreePrefab = (DecisionTreePrefab)ScriptableObject.CreateInstance(typeof(DecisionTreePrefab));
         DecisionTreeEditorPrefab newDecisionTreeEditorPrefab = (DecisionTreeEditorPrefab)ScriptableObject.CreateInstance(typeof(DecisionTreeEditorPrefab));
         AssetDatabase.CreateAsset(newDecisionTreePrefab, DecisionTreePrefabPath + ".asset");

@@ -9,6 +9,7 @@ public class NPC_Movement_Coward_N : DecisionState
     private Rigidbody rigidbody;
     private GameObject dragon;
     float force = 3.0f;
+    private Material material;
 
     // Start is called before the first frame update
     public override void DecisionStateStart()
@@ -24,11 +25,11 @@ public class NPC_Movement_Coward_N : DecisionState
         dragon = GameObject.Find("Dragon");
 
         rigidbody = this.DecisionTree.GetComponent<Rigidbody>();
-        
+        material = this.DecisionTree.transform.Find("NPCModel").GetComponent<Renderer>().material;
     }
     public override void DecisionStateUpdate()
     {
-
+        material.SetColor("_Fresnel_Color", Color.yellow);
         characterText.text = textString;
 
         if (rigidbody.IsSleeping())

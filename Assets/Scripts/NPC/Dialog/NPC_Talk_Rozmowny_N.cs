@@ -7,6 +7,7 @@ public class NPC_Talk_Rozmowny_N : DecisionState
     private TextMesh characterText;
     private TextMesh characterTraits;
     private Rigidbody rigidbody;
+    private Material material;
 
     // Start is called before the first frame update
     public override void DecisionStateStart()
@@ -20,10 +21,11 @@ public class NPC_Talk_Rozmowny_N : DecisionState
         }
 
         rigidbody = this.DecisionTree.GetComponent<Rigidbody>();
-        
+        material = this.DecisionTree.transform.Find("NPCModel").GetComponent<Renderer>().material;
     }
     public override void DecisionStateUpdate()
     {
+        material.SetColor("_Fresnel_Color", Color.green);
         if (Input.GetKey(KeyCode.Space))
             characterText.text = textString;
 
