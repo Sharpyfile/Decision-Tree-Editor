@@ -8,6 +8,7 @@ TagManager:
   - NPC
   - Dragon
   - NPC_without_native_traits
+  - NPC_Panda_BT
   layers:
   - Default
   - TransparentFX

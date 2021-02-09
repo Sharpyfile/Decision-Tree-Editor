@@ -1,0 +1,46 @@
+tree "Root"
+	fallback
+		tree "NearKnight"
+		tree "NearDragon"
+		tree "Idle"
+
+tree "NearKnight"
+	while IsNearKnight
+		fallback
+			sequence
+				HasTrait "Rozmowny"
+				DialogRozmowny
+			sequence
+				HasTrait "Spokojny"
+				DialogSpokojny
+			sequence
+				HasTrait "Gniewny"
+				DialogGniewny
+			sequence
+				HasTrait "Wstydliwy"
+				DialogWstydliwy
+
+tree "NearDragon"
+	fallback
+		while HasPunchedDragon
+			sequence
+				DragonDistance 5.0
+				MovementBraveRetreat
+		while IsNearDragon
+			fallback
+				sequence
+					HasTrait "Brave"
+					MovementBrave					
+				sequence
+					HasTrait "Coward"
+					fallback 
+						sequence
+							DragonDistance 5.0
+							MovementCoward
+						sequence
+							DragonDistance 10.0
+							MovementCowardRetreat
+					
+tree "Idle"
+	Idle
+	

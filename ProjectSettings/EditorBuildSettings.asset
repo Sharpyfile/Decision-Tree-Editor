@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/DecisionTreeSceneWithoutNativeTraits.unity
     guid: f29befa2f2ff2394cb323bb9d4b5fa6d
   - enabled: 1
@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DecisionTreeSceneWithNativeTraitsAllInLine.unity
     guid: ed92b9f8db144b141833dd83e804fbc4
+  - enabled: 1
+    path: Assets/Scenes/DecisionTreeSceneWithPandaBT.unity
+    guid: 524c2aa0713458846972380d6a794755
   m_configObjects: {}
